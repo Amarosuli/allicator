@@ -5,7 +5,7 @@ An application for ...
 ## Running Project
 
 Since Bun officialy available for windows, we use bun as replacement node environment for this project. You can access the docs [`here`](https://bun.sh/)  
-Once you've installed bun:
+Once you've installed bun, heading to your project directory and do:
 
 ```bash
 # install the dependencies
@@ -24,6 +24,8 @@ bun run dev -- --open
 - [`Shadcn-svelte`](https://www.shadcn-svelte.com/) (UI Component), this UI component use TailwindCSS
 - [`Svelte-headless-table`](https://svelte-headless-table.bryanmylee.com/), this is library for data table
 - [`lucide-svelte`](https://lucide.dev/guide/packages/lucide-svelte) (Icon)
+- [`sveltekit-superforms`](https://superforms.rocks/) (Handling form)
+- [`zod`](https://zod.dev/) TypeScript schema validation
 
 ## Backend
 
