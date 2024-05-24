@@ -11,23 +11,23 @@
 
 <div class="flex w-full flex-col items-center justify-center">
 	<div class="text-2xl font-extrabold">Login Page</div>
-	<div class="flex w-1/3 flex-col items-center justify-center space-y-3 p-8">
+	<div class="flex w-full flex-col items-center justify-center space-y-3 p-8 md:w-1/3">
 		<form class="flex w-full max-w-80 flex-col" method="post" use:enhance>
 			<Field {form} name="employeeId">
 				<Control let:attrs>
 					<Label>Employee ID</Label>
-					<Input {...attrs} bind:value={$formData.employeeId} placeholder="Your Employee ID" />
+					<Input {...attrs} bind:value={$formData.employeeId} type="text" placeholder="Your Employee ID" />
 				</Control>
-				<FieldErrors />
+				<FieldErrors class="text-xs italic" />
 			</Field>
 			<Field {form} name="password">
 				<Control let:attrs>
 					<Label>Password</Label>
 					<Input {...attrs} bind:value={$formData.password} type="password" placeholder="Your Password" />
 				</Control>
-				<FieldErrors />
+				<FieldErrors class="text-xs italic" />
 			</Field>
-			<Button type="submit">Let's go!</Button>
+			<Button class="mt-4" type="submit">Let's go!</Button>
 			{#if $message}
 				<p class="mt-2 bg-red-200 p-2 text-center text-xs font-semibold">{$message}</p>
 			{/if}

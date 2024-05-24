@@ -5,7 +5,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import type { Actions, PageServerLoad } from '../$types.js';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	if (locals.user) redirect(302, '/'); // prevent user access to login page directly
 	return { form: await superValidate(zod(loginSchema)) };
 };
 
