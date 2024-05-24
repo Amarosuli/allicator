@@ -5,48 +5,77 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import type { RecordModel } from 'pocketbase';
+	import { pb } from '$lib/pocketbaseClient.js';
+	import { z } from 'zod';
 
-	type RevisionNumber = {
-		number: string;
-		status: 'OPEN' | 'CLOSED';
+	let esnInput = '';
+	let result: RecordModel | undefined;
+	let isOpen: boolean = false;
+
+	export let data;
+	const { allEngine } = data;
+
+	const findEsn = () => {
+		let esnInputTrimmed = z.string().trim().min(1, 'Cannot Empty').safeParse(esnInput);
+		if (!esnInputTrimmed.success) return;
+
+		result = allEngine.find(({ esn }) => esn === esnInputTrimmed.data);
+		isOpen = true;
 	};
-	let revisionNumber: RevisionNumber[] = [
-		{ number: '90001975', status: 'OPEN' },
-		{ number: '90001934', status: 'CLOSED' },
-		{ number: '90003485', status: 'CLOSED' }
-	];
 
-	let esnValue = '';
+	const getRevisionByEsn = async () => {
+		return await pb.collection('project_list').getFullList({
+			filter: 'engine_id="' + result?.id + '"'
+		});
+	};
 </script>
 
 <div class="flex w-full justify-center gap-8">
-	<div class="w-1/3">
+	<div class="md:w-1/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">New Measurement</h1>
 
 		<div class="mx-auto mt-8 h-max w-full space-y-2 border p-12">
 			<Label for="esn">Engine Serial Number</Label>
 			<div class="flex w-full max-w-sm items-center gap-2">
-				<Input bind:value={esnValue} type="text" id="esn" name="esn" placeholder="Engine Serial Number" />
-				<Dialog.Root>
-					<Dialog.Trigger type="submit" class={buttonVariants({ variant: 'default' })}>Search</Dialog.Trigger>
-					<Dialog.Content class="sm:max-w-[425px] ">
+				<Input
+					bind:value={esnInput}
+					on:keypress={({ key }) => {
+						if (key === 'Enter' && !isOpen) findEsn();
+					}}
+					type="text"
+					id="esn"
+					name="esn"
+					placeholder="Engine Serial Number"
+					autocomplete="off" />
+				<Button on:click={findEsn}>Search</Button>
+				<Dialog.Root bind:open={isOpen}>
+					<Dialog.Content class="sm:max-w-[425px]">
 						<Dialog.Header>
 							<Dialog.Title class="font-semibold">Choose Revision Number</Dialog.Title>
-							<Dialog.Description class="text-xs">Choose active revision number of project ESN {esnValue}.</Dialog.Description>
+							<Dialog.Description class="text-xs">Choose active revision number of project ESN {esnInput}.</Dialog.Description>
 						</Dialog.Header>
-						<ScrollArea class="h-40 w-full rounded-md border">
-							<div class="p-4">
-								<!-- <h4 class="mb-4 text-sm font-medium leading-none">Revision Number</h4> -->
-								{#each revisionNumber as rn}
-									<div class="{rn.status === 'OPEN' ? 'bg-green-300' : 'bg-slate-200'} py-2 text-sm">
-										<a href="/calculation/{rn.number}" class="p-2 underline-offset-2 hover:underline">
-											{rn.number} - {rn.status}
-										</a>
-									</div>
-									<Separator class="my-2" />
-								{/each}
+						{#if result === undefined}
+							<div class="bg-yellow-200 p-4 font-extrabold text-slate-800">
+								Ups, Data for ESN {esnInput} Not Found!. <br /> Contact EPC to make sure the ESN already registered.
 							</div>
-						</ScrollArea>
+						{:else}
+							<ScrollArea class="h-40 w-full rounded-md border p-4">
+								{#await getRevisionByEsn()}
+									<div class="bg-yellow-200 font-extrabold text-slate-800">Loading...</div>
+								{:then projectList}
+									{#each projectList as project}
+										<div class="flex w-full items-center justify-between gap-2 text-sm">
+											<a href="/calculation/{project.revision_number}" class="p-2 font-semibold underline-offset-2 hover:underline">
+												{project.revision_number}
+											</a>
+											<p class="w-16 p-1 px-2 {project.status === 'OPEN' ? 'bg-green-300' : 'bg-slate-200'} text-xs font-extrabold">{project.status}</p>
+										</div>
+										<Separator class="" />
+									{/each}
+								{/await}
+							</ScrollArea>
+						{/if}
 					</Dialog.Content>
 				</Dialog.Root>
 			</div>
