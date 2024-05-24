@@ -1,61 +1,56 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as Accordion from '$lib/components/ui/accordion';
-	const module = [
-		{
-			module: 'x20 - Fan Major Module',
-			sub: [
-				{ name: 'X21 Fan Booster', calculation: ['Measurement A', 'Measurement B'] },
-				{ name: 'x22 Bearing 1 2', calculation: ['Measurement A', 'Measurement B'] },
-				{ name: 'x23 Fan Frame', calculation: ['Measurement A', 'Measurement B'] }
-			]
-		},
-		{
-			module: 'x30 - Core Major Module',
-			sub: [
-				{ name: 'X31 Compressor Rotor', calculation: ['Measurement A', 'Measurement B'] },
-				{ name: 'X32 Forward Case', calculation: ['Measurement A', 'Measurement B'] },
-				{ name: 'X33 Rear Case', calculation: ['Measurement A', 'Measurement B'] }
-			]
-		},
-		{
-			module: 'x40 - Combustion Module',
-			sub: [
-				{ name: 'X41 Combustion Assy', calculation: ['Measurement A', 'Measurement B'] },
-				{ name: 'X42 Combustion Chamber', calculation: ['Measurement A', 'Measurement B'] }
-			]
-		},
-		{
-			module: 'x50 - HPT Module',
-			sub: [
-				{ name: 'X51 HPT Nozzle', calculation: ['Measurement A', 'Measurement B'] },
-				{ name: 'X52 HPT Rotor Module', calculation: ['Measurement A', 'Measurement B'] },
-				{
-					name: 'X53 HPT Shroud & Stg 1 LPT Nozzle',
-					calculation: ['Measurement A', 'Measurement B']
-				},
-				{ name: 'X54 LPT Rotor Stator', calculation: ['Measurement A', 'Measurement B'] }
-			]
-		}
-	];
+
+	export let data;
+	let { module: modules, projectDetail, calculationData, calculationTemplate } = data;
+	console.log(modules);
+	function getModuleParent(data: any) {
+		return data.filter((module: any) => !module.parent_module.length);
+	}
+	function getModuleSub(data: any, parentId: any) {
+		return data.filter((module: any) => module.parent_module === parentId);
+	}
 </script>
 
-<h1 class="mb-4 text-center text-2xl font-extrabold">
-	Project Page - {$page.params.revisionNumber}
-</h1>
+<div class="flex w-full flex-col items-center justify-center space-y-2 text-center">
+	<h1 class="text-center text-2xl font-extrabold">Project Page</h1>
+	{#if projectDetail.status === 'success' && projectDetail.data}
+		<div class="border border-green-600 p-4">
+			<p class="text-sm font-semibold">ESN {projectDetail.data.esn} | {projectDetail.data.model}</p>
+			<p class="text-sm font-semibold">Revision Number: {projectDetail.data.revision_number}</p>
+		</div>
+	{:else}
+		<div class="border border-red-600 p-4">
+			<p class="text-sm font-semibold text-red-600">{projectDetail.message}</p>
+		</div>
+	{/if}
+	{#if calculationData.status === 'failed'}
+		<div class="border border-red-600 p-4">
+			<p class="text-sm font-semibold text-red-600">{calculationData.message}</p>
+		</div>
+	{/if}
+	{#if calculationTemplate.status === 'failed'}
+		<div class="border border-red-600 p-4">
+			<p class="text-sm font-semibold text-red-600">{calculationTemplate.message}</p>
+		</div>
+	{/if}
+</div>
 
-<div class="grid w-full items-center justify-center gap-4">
-	{#each module as m}
-		<div class="w-max font-extrabold uppercase">{m.module}</div>
-		<div class="flex w-[500px] border p-8">
-			<div class="w-full space-y-2">
-				<Accordion.Root>
-					{#each m.sub as sub}
+<div class="mx-auto flex w-fit flex-col items-stretch justify-center gap-3 p-2 md:w-fit md:flex-row">
+	{#each getModuleParent(modules.data) as module}
+		<div class="overflow-hidden rounded-md">
+			<div class="w-full text-ellipsis border bg-slate-100 px-4 py-4 text-center text-sm font-extrabold uppercase text-slate-700 xl:text-center">{module.name} {module.description}</div>
+			<div class="flex w-full rounded-b-md border-x border-b p-2 pb-4 shadow">
+				<Accordion.Root class="w-full px-2">
+					{#each getModuleSub(modules.data, module.id) as sub}
 						<Accordion.Item value={sub.name}>
-							<Accordion.Trigger>{sub.name}</Accordion.Trigger>
-							{#each sub.calculation as c}
-								<Accordion.Content>{c}.</Accordion.Content>
-							{/each}
+							<Accordion.Trigger>
+								<p class="pr-4 text-start text-sm">{sub.name} {sub.description}</p>
+							</Accordion.Trigger>
+							<Accordion.Content>
+								<p class="text-xs">No Reference</p>
+							</Accordion.Content>
 						</Accordion.Item>
 					{/each}
 				</Accordion.Root>
