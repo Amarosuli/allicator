@@ -62,7 +62,6 @@ export const load = async ({ locals, params }) => {
 			console.log('[getModule]', error.response.code, error.response.message);
 			return { status: 'failed', code: error.response.code, message: error.response.message };
 		}
-		console.log(modules);
 
 		if (modules.length) {
 			return { status: 'success', data: modules };

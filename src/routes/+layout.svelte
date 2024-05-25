@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -13,6 +12,9 @@
 			.join('');
 		return initial;
 	}
+
+	export let data;
+	$: user = data.user;
 </script>
 
 <div class="container mx-auto flex w-full flex-col space-y-8">
@@ -24,21 +26,21 @@
 			</a>
 		</div>
 		<div class="flex space-x-4">
-			{#if $page.data.user}
+			{#if user}
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
 						<Button variant="ghost" builders={[builder]} class="relative h-8 w-8 rounded-full">
 							<Avatar.Root class="h-8 w-8">
-								<Avatar.Image src={$page.data.user.avatar} alt={$page.data.user.username} />
-								<Avatar.Fallback class="uppercase">{getInitial($page.data.user.name)}</Avatar.Fallback>
+								<Avatar.Image src={user.avatar} alt={user.username} />
+								<Avatar.Fallback class="uppercase">{getInitial(user.name)}</Avatar.Fallback>
 							</Avatar.Root>
 						</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56" align="end">
 						<DropdownMenu.Label class="font-normal">
 							<div class="flex flex-col space-y-1">
-								<p class="text-sm font-medium leading-none">{$page.data.user.name}</p>
-								<p class="text-xs leading-none text-muted-foreground">{$page.data.user.username} - {$page.data.role.name}</p>
+								<p class="text-sm font-medium leading-none">{user.name}</p>
+								<p class="text-xs leading-none text-muted-foreground">{user.username} - {data.role?.name}</p>
 							</div>
 						</DropdownMenu.Label>
 						<DropdownMenu.Separator />
