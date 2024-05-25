@@ -31,7 +31,7 @@
 					<DropdownMenu.Trigger asChild let:builder>
 						<Button variant="ghost" builders={[builder]} class="relative h-8 w-8 rounded-full">
 							<Avatar.Root class="h-8 w-8">
-								<Avatar.Image src={user.avatar} alt={user.username} />
+								<Avatar.Image src={data.avatar} alt={user.username} />
 								<Avatar.Fallback class="uppercase">{getInitial(user.name)}</Avatar.Fallback>
 							</Avatar.Root>
 						</Button>
