@@ -3,6 +3,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
+	import { page } from '$app/stores';
 
 	function getInitial(fullname: string) {
 		let initial = fullname
@@ -60,7 +61,7 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			{:else}
-				<Button variant="link" href="/login">Login</Button>
+				<Button variant="link" href="/login" class={$page.url.pathname === '/login' ? 'hidden' : ''}>Login</Button>
 			{/if}
 		</div>
 	</div>
