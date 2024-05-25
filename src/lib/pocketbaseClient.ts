@@ -4,9 +4,9 @@ import PocketBase, { type RecordModel } from 'pocketbase';
 export const pb: PocketBase = new PocketBase(PUBLIC_PB_URL);
 
 type Option = {
-	pocketbase?: PocketBase;
-	thumb?: string;
+	download?: boolean;
+	thumb?: '';
 };
-export const getFileUrl = (record: RecordModel, option: Option): string => {
-	return option.pocketbase ? option.pocketbase.files.getUrl(record, record.documents[0], { thumb: option.thumb }) : pb.files.getUrl(record, record.documents[0], { thumb: option.thumb });
+export const getFileUrl = (collectionIdOrCollectionName: string, id: string, filename: string, option?: Option): string => {
+	return `${PUBLIC_PB_URL}/api/files/${collectionIdOrCollectionName}/${id}/${filename}?thumb=${option?.thumb}&download=${option?.download ? 1 : 0}`;
 };
