@@ -3,10 +3,11 @@
 	import { Button } from '$lib/components/ui/button';
 	import { FieldErrors, Control, Field, Label } from '$lib/components/ui/form';
 	import { superForm } from 'sveltekit-superforms';
+	import { LoaderCircle } from 'lucide-svelte';
 
 	export let data;
 	const form = superForm(data.form);
-	const { form: formData, message, enhance } = form;
+	const { form: formData, delayed, message, enhance } = form;
 </script>
 
 <div class="flex w-full flex-col items-center justify-center">
@@ -27,7 +28,13 @@
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
-			<Button class="mt-4" type="submit">Let's go!</Button>
+			<Button class="mt-4" type="submit" disabled={$delayed ? true : false}>
+				{#if $delayed}
+					<LoaderCircle class="mr-2 h-4 w-4 animate-spin " /> Processing...
+				{:else}
+					Let's go!
+				{/if}
+			</Button>
 			{#if $message}
 				<p class="mt-2 bg-red-200 p-2 text-center text-xs font-semibold">{$message}</p>
 			{/if}
