@@ -1,6 +1,8 @@
 import type { RecordModel } from 'pocketbase';
 
-export const load = async ({ locals, params }) => {
+export const load = async ({ locals, params, setHeaders }) => {
+	setHeaders({ 'cache-control': 'max-age=600' });
+
 	const getProjectDetail = async () => {
 		let project: RecordModel;
 		try {
@@ -71,7 +73,7 @@ export const load = async ({ locals, params }) => {
 	};
 
 	return {
-		module: await getModule(),
+		modules: await getModule(),
 		projectDetail: await getProjectDetail(),
 		calculationData: await getCalculationData(),
 		calculationTemplate: await getCalculationTemplate()
