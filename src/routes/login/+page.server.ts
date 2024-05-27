@@ -23,6 +23,6 @@ export const actions: Actions = {
 			return message(form, errorMessage, { status: error?.status });
 		}
 
-		throw redirect(302, '/');
+		throw redirect(303, '/');
 	}
 };
