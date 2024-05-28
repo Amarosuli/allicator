@@ -8,6 +8,7 @@
 	import type { RecordModel } from 'pocketbase';
 	import { pb } from '$lib/pocketbaseClient.js';
 	import { z } from 'zod';
+	import { LoaderCircle } from 'lucide-svelte';
 
 	let esnInput = '';
 	let result: RecordModel | undefined;
@@ -31,11 +32,15 @@
 	};
 </script>
 
-<div class="flex w-full justify-center gap-8">
+<svelte:head>
+	<title>Home</title>
+</svelte:head>
+
+<div class="flex w-full flex-col items-center justify-center gap-8 lg:flex-row">
 	<div class="md:w-1/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">New Measurement</h1>
 
-		<div class="mx-auto mt-8 h-max w-full space-y-2 border p-12">
+		<div class="mx-auto mt-8 h-2/3 w-full space-y-2 border p-8 shadow">
 			<Label for="esn">Engine Serial Number</Label>
 			<div class="flex w-full max-w-sm items-center gap-2">
 				<Input
@@ -62,7 +67,7 @@
 						{:else}
 							<ScrollArea class="h-40 w-full rounded-md border p-4">
 								{#await getRevisionByEsn()}
-									<div class="bg-yellow-200 font-extrabold text-slate-800">Loading...</div>
+									<div class="flex h-32 w-full items-center justify-center gap-2 bg-muted font-semibold text-slate-800"><LoaderCircle class="mr-2 h-6 w-6 animate-spin " /> Loading...</div>
 								{:then projectList}
 									{#each projectList as project}
 										<div class="flex w-full items-center justify-between gap-2 text-sm">
@@ -80,6 +85,49 @@
 				</Dialog.Root>
 			</div>
 			<p class="text-xs text-muted-foreground">Enter ESN (Engine Serial Number).</p>
+		</div>
+	</div>
+
+	<div class="md:w-1/3">
+		<h1 class="w-full text-center text-2xl font-extrabold">Project Manager</h1>
+
+		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 gap-2 border p-8 shadow">
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Engine List</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Project List</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Customer List</Button>
+			</div>
+			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage project data.</p>
+		</div>
+	</div>
+
+	<div class="md:w-1/3">
+		<h1 class="w-full text-center text-2xl font-extrabold">Master Data</h1>
+
+		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 items-start justify-start gap-2 border p-8 shadow">
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Template</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button href="/engine_model">Engine Model</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button href="/engine_family">Engine Family</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Project Type</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Unit</Button>
+			</div>
+			<div class="flex w-full flex-col space-y-2">
+				<Button disabled={data.user ? false : true}>Role</Button>
+			</div>
+			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage master data.</p>
 		</div>
 	</div>
 </div>
