@@ -1,5 +1,5 @@
 import { PUBLIC_PB_URL } from '$env/static/public';
-import PocketBase, { type RecordModel } from 'pocketbase';
+import PocketBase from 'pocketbase';
 
 export const pb: PocketBase = new PocketBase(PUBLIC_PB_URL);
 
