@@ -27,8 +27,9 @@
 </script>
 
 {#if loadingPage}
-	<div transition:fade={{ duration: 200 }} class="absolute z-[1000] flex h-full w-full items-center justify-center bg-slate-700/70 text-2xl font-semibold text-yellow-300">
-		<LoaderCircle class="h-1/4 animate-spin" />
+	<div transition:fade={{ duration: 200 }} class="fixed z-[1000] flex h-screen w-full flex-col items-center justify-center bg-slate-700/70 text-2xl font-semibold">
+		<LoaderCircle class="animate-spin text-yellow-400" />
+		<p class="pt-2 text-sm text-yellow-300">Loading</p>
 	</div>
 {/if}
 <div class="container mx-auto flex w-full flex-col space-y-8">
