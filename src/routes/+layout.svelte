@@ -1,12 +1,15 @@
 <script lang="ts">
 	import '../app.css';
+
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
-	import { page } from '$app/stores';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { Toaster } from '$lib/components/ui/sonner';
+	import { LoaderCircle, Moon, Sun } from 'lucide-svelte';
+	import { ModeWatcher, toggleMode } from 'mode-watcher';
+	import { Button } from '$lib/components/ui/button';
 	import { fade } from 'svelte/transition';
-	import { LoaderCircle } from 'lucide-svelte';
+	import { page } from '$app/stores';
 
 	function getInitial(fullname: string) {
 		let initial = fullname
@@ -32,6 +35,10 @@
 		<p class="pt-2 text-sm text-yellow-300">Loading</p>
 	</div>
 {/if}
+
+<Toaster />
+<ModeWatcher />
+
 <div class="container mx-auto flex w-full flex-col space-y-8">
 	<div class="flex h-20 items-center justify-between border-b px-4">
 		<div>
@@ -40,7 +47,7 @@
 				<h1 class="font-extrabold">Allicator</h1>
 			</a>
 		</div>
-		<div class="flex space-x-4">
+		<div class="flex items-center space-x-4">
 			{#if user}
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
@@ -77,6 +84,11 @@
 			{:else}
 				<Button variant="link" href="/login" class={$page.url.pathname === '/login' ? 'hidden' : ''}>Login</Button>
 			{/if}
+			<Button on:click={toggleMode} variant="outline" size="icon">
+				<Sun class="h-4 w-4 rotate-0 scale-100 text-yellow-600 transition-all duration-100 dark:-rotate-90 dark:scale-0" />
+				<Moon class="absolute h-4 w-4 rotate-90 scale-0 text-yellow-400 transition-all duration-100 dark:rotate-0 dark:scale-100" />
+				<span class="sr-only">Toggle theme</span>
+			</Button>
 		</div>
 	</div>
 	<slot></slot>
