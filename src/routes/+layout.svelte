@@ -47,12 +47,12 @@
 				<h1 class="font-extrabold">Allicator</h1>
 			</a>
 		</div>
-		<div class="flex items-center space-x-4">
+		<div class="flex items-center gap-2">
 			{#if user}
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
-						<Button variant="ghost" builders={[builder]} class="relative h-8 w-8 rounded-full">
-							<Avatar.Root class="h-8 w-8">
+						<Button variant="ghost" builders={[builder]} class="relative h-9 w-9 rounded-full">
+							<Avatar.Root class="h-9 w-9">
 								<Avatar.Image src={data.avatar} alt={user.username} />
 								<Avatar.Fallback class="uppercase">{getInitial(user.name)}</Avatar.Fallback>
 							</Avatar.Root>

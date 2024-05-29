@@ -93,13 +93,13 @@
 
 		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 gap-2 border p-8 shadow">
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Engine List</Button>
+				<Button disabled>Engine List</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Project List</Button>
+				<Button disabled>Project List</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Customer List</Button>
+				<Button disabled>Customer List</Button>
 			</div>
 			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage project data.</p>
 		</div>
@@ -110,22 +110,22 @@
 
 		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 items-start justify-start gap-2 border p-8 shadow">
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Template</Button>
+				<Button disabled>Formula</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Engine Model</Button>
+				<Button disabled>Engine Model</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
 				<Button href="/engine_family">Engine Family</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Project Type</Button>
+				<Button disabled>Project Type</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Unit</Button>
+				<Button disabled>Unit</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled={data.user ? false : true}>Role</Button>
+				<Button disabled>Role</Button>
 			</div>
 			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage master data.</p>
 		</div>
