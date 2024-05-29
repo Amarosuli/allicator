@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Input } from '$lib/components/ui/input';
-	import { Button } from '$lib/components/ui/button';
 	import { FieldErrors, Control, Field, Label } from '$lib/components/ui/form';
-	import { superForm } from 'sveltekit-superforms';
 	import { LoaderCircle } from 'lucide-svelte';
+	import { superForm } from 'sveltekit-superforms';
+	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
 
 	export let data;
 	const form = superForm(data.form);
@@ -36,7 +36,7 @@
 				{/if}
 			</Button>
 			{#if $message}
-				<p class="mt-2 bg-red-200 p-2 text-center text-xs font-semibold">{$message}</p>
+				<p class="mt-2 bg-destructive p-2 text-center text-xs font-semibold text-destructive-foreground">{$message}</p>
 			{/if}
 		</form>
 		<div class="flex w-full flex-col items-center justify-center space-y-2 p-8">

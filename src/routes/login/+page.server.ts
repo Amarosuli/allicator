@@ -1,12 +1,12 @@
+import { fail, superValidate, message } from 'sveltekit-superforms';
 import { loginSchema } from '$lib/zodSchema.js';
-import { fail, redirect } from '@sveltejs/kit';
-import { superValidate, message } from 'sveltekit-superforms';
+import { redirect } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import type { Actions, PageServerLoad } from '../$types.js';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (locals.user) redirect(302, '/'); // prevent user access to login page directly
+	if (locals.user) redirect(302, '/'); // Prevent guest users from accessing this page directly.
 	return { form: await superValidate(zod(loginSchema)) };
 };
 
