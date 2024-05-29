@@ -113,7 +113,7 @@
 				<Button disabled={data.user ? false : true}>Template</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button href="/engine_model">Engine Model</Button>
+				<Button disabled={data.user ? false : true}>Engine Model</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
 				<Button href="/engine_family">Engine Family</Button>

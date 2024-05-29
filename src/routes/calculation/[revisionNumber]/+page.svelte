@@ -3,8 +3,8 @@
 	import * as Accordion from '$lib/components/ui/accordion';
 
 	export let data;
-	let { module: modules, projectDetail, calculationData, calculationTemplate } = data;
-	console.log(modules);
+	let { modules, projectDetail, calculationData, calculationTemplate } = data;
+
 	function getModuleParent(data: any) {
 		return data.filter((module: any) => !module.parent_module.length);
 	}
