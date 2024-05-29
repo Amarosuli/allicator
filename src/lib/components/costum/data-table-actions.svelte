@@ -1,9 +1,13 @@
 <script lang="ts">
-	import Ellipsis from 'lucide-svelte/icons/ellipsis';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { Ellipsis } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
+	import { toast } from 'svelte-sonner';
+
+	import type { AuthModel } from 'pocketbase';
 
 	export let id: string;
+	export let user: AuthModel | undefined;
 </script>
 
 <DropdownMenu.Root>
@@ -16,12 +20,20 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Label>Actions</DropdownMenu.Label>
-			<DropdownMenu.Item on:click={() => navigator.clipboard.writeText(id)}>
-				Copy payment ID
-			</DropdownMenu.Item>
+			<DropdownMenu.Item
+				on:click={async () => {
+					try {
+						await navigator.clipboard.writeText(id);
+						toast.success('The Data ID was copied to your clipboard!');
+					} catch (_) {
+						toast.error('Failed to copy ID');
+					}
+				}}>Copy Data ID</DropdownMenu.Item>
 		</DropdownMenu.Group>
-		<DropdownMenu.Separator />
-		<DropdownMenu.Item>View customer</DropdownMenu.Item>
-		<DropdownMenu.Item>View payment details</DropdownMenu.Item>
+		{#if user}
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item href="/engine_family/edit?id={id}">Edit</DropdownMenu.Item>
+			<DropdownMenu.Item href="/engine_family/delete?id={id}">Delete</DropdownMenu.Item>
+		{/if}
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
