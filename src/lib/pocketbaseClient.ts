@@ -1,7 +1,7 @@
 import { PUBLIC_PB_URL } from '$env/static/public';
 import PocketBase from 'pocketbase';
 
-export const pb: PocketBase = new PocketBase(PUBLIC_PB_URL);
+export const pb: PocketBase = new PocketBase(PUBLIC_PB_URL).autoCancellation(false);
 
 type Option = {
 	download?: boolean;
