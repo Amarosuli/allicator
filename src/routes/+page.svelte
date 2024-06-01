@@ -113,7 +113,7 @@
 				<Button disabled>Formula</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled>Engine Model</Button>
+				<Button href="/engine_model">Engine Model</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
 				<Button href="/engine_family">Engine Family</Button>
