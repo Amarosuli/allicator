@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { LoaderCircle } from 'lucide-svelte';
+	import { getFirstPath } from '$lib/helpers.js';
 	import { Separator } from '$lib/components/ui/separator';
 	import { redirect } from '@sveltejs/kit';
 	import { Button } from '$lib/components/ui/button';
@@ -12,6 +13,7 @@
 
 	export let data;
 	const { engineFamily } = data;
+	const basePath = getFirstPath($page.url.pathname);
 
 	let password: string;
 	let id: string | null = $page.url.searchParams.get('id');
@@ -21,7 +23,7 @@
 
 	async function confirmationCheck() {
 		isLoading = true;
-		if (!id) throw redirect(308, '/engine_family'); // redirect if id undefined
+		if (!id) throw redirect(308, basePath); // redirect if id undefined
 		try {
 			await pb.collection('users').authWithPassword(username, password);
 			await deleteData(id);
@@ -31,7 +33,7 @@
 			return;
 		}
 		isLoading = false;
-		goto('/engine_family');
+		goto(basePath);
 	}
 
 	async function deleteData(id: string) {
@@ -43,6 +45,10 @@
 		}
 	}
 </script>
+
+<svelte:head>
+	<title>Engine Families - Delete</title>
+</svelte:head>
 
 <div class="flex w-full flex-col items-center justify-center">
 	<h1 class="w-80 pb-4 text-center text-2xl font-extrabold">Are you sure you want to delete this data?</h1>
@@ -73,7 +79,7 @@
 					{/if}
 				</Button>
 			</form>
-			<Button variant="outline" href="/engine_family">Cancel</Button>
+			<Button variant="outline" href={basePath}>Cancel</Button>
 		</div>
 	</div>
 </div>
