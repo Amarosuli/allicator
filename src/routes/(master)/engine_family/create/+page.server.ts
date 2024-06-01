@@ -23,6 +23,6 @@ export const actions: Actions = {
 			return message(form, errorMessage, { status: error?.status });
 		}
 
-		throw redirect(303, '/engine_family');
+		return message(form, 'Create Data successfully!');
 	}
 };
