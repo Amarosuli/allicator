@@ -1,16 +1,31 @@
 <script lang="ts">
 	import { FieldErrors, Control, Field, Label } from '$lib/components/ui/form';
 	import { LoaderCircle } from 'lucide-svelte';
+	import { getFirstPath } from '$lib/helpers.js';
 	import { superForm } from 'sveltekit-superforms';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let data;
-	const form = superForm(data.form);
+	const form = superForm(data.form, {
+		onUpdated({ form }) {
+			if (form.valid) {
+				toast.success(form.message);
+				goto(basePath);
+			}
+		}
+	});
 	const { form: formData, delayed, message, enhance } = form;
-
+	const basePath = getFirstPath($page.url.pathname);
 	$: data.engineFamily && formData.set(data.engineFamily);
 </script>
+
+<svelte:head>
+	<title>Engine Families - Edit</title>
+</svelte:head>
 
 <div class="flex w-full flex-col items-center justify-center">
 	<div class="text-2xl font-extrabold">Edit Engine Family</div>
@@ -40,7 +55,7 @@
 			{#if $message}
 				<p class="mt-2 bg-destructive p-2 text-center text-xs font-semibold text-destructive-foreground">{$message}</p>
 			{/if}
-			<Button class="mt-4" variant="outline" href="/engine_family">Cancel</Button>
+			<Button class="mt-4" variant="outline" href={basePath}>Cancel</Button>
 		</form>
 	</div>
 </div>
