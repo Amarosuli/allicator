@@ -1,7 +1,9 @@
+import { getFirstPath } from '$lib/helpers';
 import { describe, it, expect } from 'vitest';
 
-describe('sum test', () => {
-	it('adds 1 + 2 to equal 3', () => {
-		expect(1 + 2).toBe(3);
+describe('Get first pathname', () => {
+	const pathname = '/engine_family/create?id="abcdefg"';
+	it('get the first pathname', () => {
+		expect(getFirstPath(pathname)).equal('/engine_family');
 	});
 });
