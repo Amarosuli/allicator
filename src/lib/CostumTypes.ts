@@ -1,4 +1,4 @@
-import type { RecordModel } from 'pocketbase';
+import PocketBase, { RecordService, type RecordModel } from 'pocketbase';
 
 export interface EngineFamily extends RecordModel {
 	name: string;
@@ -24,3 +24,17 @@ export interface EngineList extends RecordModel {
 	esn: string;
 	note: string;
 }
+
+export interface TypedPocketBase extends PocketBase {
+	collection(idOrName: string): RecordService;
+	collection(idOrName: 'engine_families'): RecordService<EngineFamily>;
+	collection(idOrName: 'engine_models'): RecordService<EngineModel>;
+	collection(idOrName: 'customers'): RecordService<Customer>;
+	collection(idOrName: 'units'): RecordService<Unit>;
+	collection(idOrName: 'engine_list'): RecordService<EngineList>;
+}
+
+export type FileUrlOption = {
+	download?: boolean;
+	thumb?: string;
+};
