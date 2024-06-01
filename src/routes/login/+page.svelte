@@ -24,7 +24,7 @@
 			<Field {form} name="password">
 				<Control let:attrs>
 					<Label>Password</Label>
-					<Input {...attrs} bind:value={$formData.password} type="password" placeholder="Your Password" />
+					<Input {...attrs} bind:value={$formData.password} type="password" autocomplete="false" placeholder="Your Password" />
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
