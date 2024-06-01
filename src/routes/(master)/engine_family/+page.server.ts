@@ -5,6 +5,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		return await locals.pb.collection('engine_families').getList(1, 6);
 	};
 	return {
-		engineFamily: await getEngineFamily()
+		engineFamily: []
 	};
 };

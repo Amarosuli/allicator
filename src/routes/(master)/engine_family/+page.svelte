@@ -8,8 +8,10 @@
 	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, PlusCircle } from 'lucide-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { writable } from 'svelte/store';
+	import { onMount } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
 	import { pb } from '$lib/pocketbaseClient.js';
 	import { cn } from '$lib/utils.js';
@@ -17,8 +19,9 @@
 	import type { RecordModel } from 'pocketbase';
 
 	export let data;
-	const { engineFamily, user } = data;
+	const { user } = data;
 
+	const basePath = $page.url.pathname;
 	let isDataLoading = writable<boolean>(false);
 	let hasNextPage: boolean;
 	let hasPrevPage: boolean;
@@ -26,12 +29,21 @@
 	let totalPages = writable(1);
 	let items = writable<RecordModel[]>([]);
 
-	$: $items = engineFamily.items;
-	$: $currentPage = engineFamily.page;
-	$: $totalPages = engineFamily.totalPages;
+	$: $items = [];
+	$: $currentPage = 1;
+	$: $totalPages = 1;
 
 	$: hasPrevPage = $currentPage != 1 && $currentPage <= $totalPages ? true : false;
 	$: hasNextPage = $currentPage < $totalPages ? true : false;
+
+	async function loadPage() {
+		$isDataLoading = true;
+		let result = await pb.collection('engine_families').getList($currentPage, 6);
+		$totalPages = result.totalPages;
+		$items = result.items;
+		$currentPage = result.page;
+		$isDataLoading = false;
+	}
 
 	async function nextPage() {
 		$isDataLoading = true;
@@ -106,7 +118,7 @@
 			header: '',
 			accessor: ({ id }) => id,
 			cell: (item) => {
-				return createRender(DataTableActions, { id: item.value, user });
+				return createRender(DataTableActions, { id: item.value, user, basePath });
 			},
 			plugins: {
 				sort: {
@@ -130,17 +142,27 @@
 		.map(([id]) => id);
 
 	const hideableCols = ['name', 'description'];
+
+	onMount(() => {
+		loadPage();
+	});
 </script>
 
 <svelte:head>
 	<title>Engine Families</title>
 </svelte:head>
 
-<div class="mx-auto h-max w-full border p-4">
+<div class="relative mx-auto h-max w-full border p-4">
+	{#if $isDataLoading}
+		<div transition:fade={{ duration: 200 }} class="absolute inset-0 z-30 flex h-full flex-col items-center justify-center bg-slate-600/70">
+			<LoaderCircle class="animate-spin text-yellow-400" />
+			<p class="pt-2 text-sm text-yellow-300">Loading Data</p>
+		</div>
+	{/if}
 	<div class="flex w-full items-center justify-between">
 		<p class="w-full font-extrabold lg:text-xl">Engine Families</p>
 		{#if user}
-			<Button size="sm" href="/engine_family/create">
+			<Button size="sm" href="{basePath}/create">
 				<div class="flex items-center gap-2">
 					Add <PlusCircle class="h-4 w-4" />
 				</div>
@@ -168,13 +190,7 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>
-	<div class="relative rounded-md border">
-		{#if $isDataLoading}
-			<div transition:fade={{ duration: 200 }} class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-secondary/80">
-				<LoaderCircle class="animate-spin text-yellow-400" />
-				<p class="pt-2 text-sm text-yellow-300">Loading Data</p>
-			</div>
-		{/if}
+	<div class="rounded-md border">
 		<Table.Root {...$tableAttrs}>
 			<Table.Header>
 				{#each $headerRows as headerRow}
