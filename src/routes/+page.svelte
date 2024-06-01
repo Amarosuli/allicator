@@ -1,14 +1,15 @@
 <script lang="ts">
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { LoaderCircle } from 'lucide-svelte';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { Separator } from '$lib/components/ui/separator';
-	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import type { RecordModel } from 'pocketbase';
 	import { pb } from '$lib/pocketbaseClient.js';
 	import { z } from 'zod';
-	import { LoaderCircle } from 'lucide-svelte';
+
+	import type { RecordModel } from 'pocketbase';
 
 	let esnInput = '';
 	let result: RecordModel | undefined;

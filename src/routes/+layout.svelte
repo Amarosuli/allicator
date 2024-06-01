@@ -4,9 +4,9 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { Toaster } from '$lib/components/ui/sonner';
 	import { LoaderCircle, Moon, Sun } from 'lucide-svelte';
 	import { ModeWatcher, toggleMode } from 'mode-watcher';
+	import { Toaster } from '$lib/components/ui/sonner';
 	import { Button } from '$lib/components/ui/button';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
@@ -24,6 +24,7 @@
 	$: user = data.user;
 
 	let loadingPage: boolean = false;
+	let loadingMessage: string = 'Loading';
 
 	beforeNavigate(() => (loadingPage = true));
 	afterNavigate(() => (loadingPage = false));
@@ -32,7 +33,7 @@
 {#if loadingPage}
 	<div transition:fade={{ duration: 200 }} class="fixed z-[1000] flex h-screen w-full flex-col items-center justify-center bg-slate-700/70 text-2xl font-semibold">
 		<LoaderCircle class="animate-spin text-yellow-400" />
-		<p class="pt-2 text-sm text-yellow-300">Loading</p>
+		<p class="pt-2 text-sm text-yellow-300">{loadingMessage}</p>
 	</div>
 {/if}
 
