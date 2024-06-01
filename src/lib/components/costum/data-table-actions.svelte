@@ -8,6 +8,7 @@
 
 	export let id: string;
 	export let user: AuthModel | undefined;
+	export let basePath: string;
 </script>
 
 <DropdownMenu.Root>
@@ -32,8 +33,8 @@
 		</DropdownMenu.Group>
 		{#if user}
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item href="/engine_family/edit?id={id}">Edit</DropdownMenu.Item>
-			<DropdownMenu.Item href="/engine_family/delete?id={id}">Delete</DropdownMenu.Item>
+			<DropdownMenu.Item href="{basePath}/edit?id={id}">Edit</DropdownMenu.Item>
+			<DropdownMenu.Item href="{basePath}/delete?id={id}">Delete</DropdownMenu.Item>
 		{/if}
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
