@@ -7,62 +7,21 @@
 	import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, PlusCircle } from 'lucide-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
-	import { writable } from 'svelte/store';
-	import { onMount } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { page } from '$app/stores';
 	import { fade } from 'svelte/transition';
-	import { pb } from '$lib/pocketbaseClient.js';
 	import { cn } from '$lib/utils.js';
 
-	import type { RecordModel } from 'pocketbase';
+	import { createPageFile } from '$lib/helpers.js';
 
 	export let data;
 	const { user } = data;
-
 	const basePath = $page.url.pathname;
-	let isDataLoading = writable<boolean>(false);
-	let hasNextPage: boolean;
-	let hasPrevPage: boolean;
-	let currentPage = writable(0);
-	let totalPages = writable(1);
-	let items = writable<RecordModel[]>([]);
 
-	$: $items = [];
-	$: $currentPage = 1;
-	$: $totalPages = 1;
-
-	$: hasPrevPage = $currentPage != 1 && $currentPage <= $totalPages ? true : false;
-	$: hasNextPage = $currentPage < $totalPages ? true : false;
-
-	async function loadPage() {
-		$isDataLoading = true;
-		let result = await pb.collection('engine_families').getList($currentPage, 6);
-		$totalPages = result.totalPages;
-		$items = result.items;
-		$currentPage = result.page;
-		$isDataLoading = false;
-	}
-
-	async function nextPage() {
-		$isDataLoading = true;
-		let result = await pb.collection('engine_families').getList($currentPage + 1, 6);
-		$totalPages = result.totalPages;
-		$items = result.items;
-		$currentPage = result.page;
-		$isDataLoading = false;
-	}
-
-	async function prevPage() {
-		$isDataLoading = true;
-		let result = await pb.collection('engine_families').getList($currentPage - 1, 6);
-		$totalPages = result.totalPages;
-		$items = result.items;
-		$currentPage = result.page;
-		$isDataLoading = false;
-	}
-
+	const {nextPage, prevPage, getState} = createPageFile().init('engine_families')
+    const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
+	
 	const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),
 		filter: addTableFilter({
@@ -142,10 +101,6 @@
 		.map(([id]) => id);
 
 	const hideableCols = ['name', 'description'];
-
-	onMount(() => {
-		loadPage();
-	});
 </script>
 
 <svelte:head>
@@ -153,7 +108,7 @@
 </svelte:head>
 
 <div class="relative mx-auto h-max w-full border p-4">
-	{#if $isDataLoading}
+	{#if $isLoading}
 		<div transition:fade={{ duration: 200 }} class="absolute inset-0 z-30 flex h-full flex-col items-center justify-center bg-slate-600/70">
 			<LoaderCircle class="animate-spin text-yellow-400" />
 			<p class="pt-2 text-sm text-yellow-300">Loading Data</p>
@@ -247,7 +202,7 @@
 		<div class="flex-1 text-sm text-muted-foreground">
 			Page {$currentPage} of {$totalPages}
 		</div>
-		<Button variant="outline" size="sm" on:click={prevPage} disabled={!hasPrevPage}>Previous</Button>
-		<Button variant="outline" size="sm" disabled={!hasNextPage} on:click={nextPage}>Next</Button>
+		<Button variant="outline" size="sm" on:click={prevPage} disabled={!$hasPrevPage}>Previous</Button>
+		<Button variant="outline" size="sm" disabled={!$hasNextPage} on:click={nextPage}>Next</Button>
 	</div>
 </div>
