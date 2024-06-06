@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
+    import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
 	import DataTableActions from '$lib/components/costum/data-table-actions.svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -13,16 +13,18 @@
 	import { fade } from 'svelte/transition';
 	import { cn } from '$lib/utils.js';
 
-	import { createPageFile } from '$lib/helpers.js';
+	import { createPageFile } from "$lib/helpers";
 
-	export let data;
-	const { user } = data;
-	const basePath = $page.url.pathname;
+    export let data;
 
-	const {nextPage, prevPage, getState} = createPageFile().init('engine_families')
+    const {user} = data
+    const basePath = $page.url.pathname;
+
+    const {nextPage, prevPage, getState} = createPageFile().init('engine_modules', { expand: 'parent_module' })
     const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
-	
-	const table = createTable(items, {
+
+    
+    const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),
 		filter: addTableFilter({
 			fn: ({ filterValue, value }) => value.includes(filterValue)
@@ -31,7 +33,7 @@
 		hide: addHiddenColumns()
 	});
 
-	const columns = table.createColumns([
+    const columns = table.createColumns([
 		table.column({
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
@@ -59,8 +61,7 @@
 		}),
 		table.column({
 			header: 'Name',
-			accessor: 'name',
-			plugins: { filter: { exclude: true } }
+			accessor: 'name'
 		}),
 		table.column({
 			header: 'Description',
@@ -72,6 +73,16 @@
 					}
 				}
 			}
+		}),
+		table.column({
+			header: 'Parent Module',
+			accessor: (item) => {
+				if (!item.expand) {
+                    return '-';
+                } else {
+                    return `${item.expand.parent_module.name} - ${item.expand.parent_module.description}`
+                }
+			},
 		}),
 		table.column({
 			header: '',
@@ -87,7 +98,7 @@
 		})
 	]);
 
-	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, flatColumns, pluginStates, rows } = table.createViewModel(columns);
+    const { headerRows, pageRows, tableAttrs, tableBodyAttrs, flatColumns, pluginStates, rows } = table.createViewModel(columns);
 	const { selectedDataIds } = pluginStates.select;
 	const { hiddenColumnIds } = pluginStates.hide;
 	const { filterValue } = pluginStates.filter;
@@ -100,11 +111,12 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hideableCols = ['name', 'description'];
+	const hideableCols = ['name', 'description', 'Parent Module'];
 </script>
 
+
 <svelte:head>
-	<title>Engine Families</title>
+	<title>Engine Modules</title>
 </svelte:head>
 
 <div class="relative mx-auto h-max w-full border p-4">
@@ -115,7 +127,7 @@
 		</div>
 	{/if}
 	<div class="flex w-full items-center justify-between">
-		<p class="w-full font-extrabold lg:text-xl">Engine Families</p>
+		<p class="w-full font-extrabold lg:text-xl">Engine Modules</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
 				<div class="flex items-center gap-2">
@@ -154,7 +166,9 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class={cn('[&:has([role=checkbox])]:pl-3')}>
-										{#if cell.id === 'name'}
+										{#if cell.id === 'id' || cell.id === ''}
+											<Render of={cell.render()} />
+										{:else}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
 												{#if $sortKeys[0]?.id === cell.id && $sortKeys[0]?.order === 'asc'}
@@ -165,8 +179,6 @@
 													<div class="ml-2 h-4 w-4"></div>
 												{/if}
 											</Button>
-										{:else}
-											<Render of={cell.render()} />
 										{/if}
 									</Table.Head>
 								</Subscribe>
@@ -182,12 +194,12 @@
 							{#each row.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<Table.Cell class="[&:has([role=checkbox])]:pl-3" {...attrs}>
-										{#if cell.id === 'name'}
+										{#if cell.id === 'id' || cell.id === ''}
+											<Render of={cell.render()} />
+										{:else}
 											<div class="ml-4 capitalize">
 												<Render of={cell.render()} />
 											</div>
-										{:else}
-											<Render of={cell.render()} />
 										{/if}
 									</Table.Cell>
 								</Subscribe>
