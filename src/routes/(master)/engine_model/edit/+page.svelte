@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 
 	export let data;
-	const { engineFamilies } = data;
+	const { engineFamilies, engineModel } = data;
 	const form = superForm(data.form, {
 		onUpdated({ form }) {
 			if (form.valid) {
@@ -23,7 +23,7 @@
 	});
 	const { form: formData, delayed, message, enhance } = form;
 	const basePath = getFirstPath($page.url.pathname);
-	$: data.engineModel && formData.set({ ...data.engineModel, family_id: data.engineModel.expand?.family_id.id });
+	$: engineModel && formData.set({ ...engineModel, family_id: engineModel.expand!.family_id.id });
 	$: selectedFamily = $formData.family_id
 		? {
 				label: engineFamilies.find(({ value }) => value == $formData.family_id)?.label,

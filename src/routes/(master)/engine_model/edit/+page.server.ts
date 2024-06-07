@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			});
 	};
 
-	const getEngineFamily = async (): Promise<SelectOption[]> => {
+	const getEngineFamily = async () => {
 		const result = await locals.pb.collection('engine_families').getFullList();
 		return result.map(({ id, name }) => {
 			return { label: name, value: id };
