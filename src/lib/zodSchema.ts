@@ -21,3 +21,8 @@ export const engineModuleSchema = z.object({
 	description: z.string().trim().optional(),
 	parent_module: z.string().trim().optional()
 })
+
+export const unitSchema = z.object({
+	name: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters'),
+	description: z.string().trim().optional()
+});
