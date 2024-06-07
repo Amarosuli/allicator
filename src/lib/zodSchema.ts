@@ -15,3 +15,9 @@ export const engineModelSchema = z.object({
 	description: z.string().trim().optional(),
 	family_id: z.string().trim().min(1, 'Engine family is necessary')
 });
+
+export const engineModuleSchema = z.object({
+	name: z.string().trim().min(2, 'Module Name is required, Minimal 2 Characters'),
+	description: z.string().trim().optional(),
+	parent_module: z.string().trim().optional()
+})
