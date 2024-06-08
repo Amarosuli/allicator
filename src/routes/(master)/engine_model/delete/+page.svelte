@@ -75,7 +75,7 @@
 		<div class="flex w-full flex-col space-y-2">
 			<form class="flex w-full flex-col space-y-2" on:submit|preventDefault={async () => await confirmationCheck()}>
 				<Label class="">Type Your Password</Label>
-				<Input type="password" bind:value={password} />
+				<Input type="password" autocomplete="off" bind:value={password} />
 				<Button variant="destructive" type="submit" disabled={isLoading ? true : false}>
 					{#if isLoading}
 						<LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> Deleting...
