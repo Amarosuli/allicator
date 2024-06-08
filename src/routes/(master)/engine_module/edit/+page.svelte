@@ -2,7 +2,7 @@
 	import * as Select from '$lib/components/ui/select';
 
 	import { FieldErrors, Control, Field, Label } from '$lib/components/ui/form';
-	import { LoaderCircle } from 'lucide-svelte';
+	import { LoaderCircle, X } from 'lucide-svelte';
 	import { getFirstPath } from '$lib/helpers.js';
 	import { superForm } from 'sveltekit-superforms';
 	import { Button } from '$lib/components/ui/button';
@@ -29,7 +29,10 @@
 				label: engineModules.find(({ value }) => value == $formData.parent_module)?.label,
 				value: $formData.parent_module
 			}
-		: undefined;
+		: {
+				label: undefined,
+				value: ''
+			};
 </script>
 
 <svelte:head>
@@ -54,7 +57,7 @@
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
-			<Field {form} name="parent_module">
+			<Field {form} name="parent_module" class="relative">
 				<Control let:attrs>
 					<Label>Parent Module</Label>
 					<Select.Root
@@ -63,8 +66,11 @@
 							v && ($formData.parent_module = v.value);
 						}}>
 						<Select.Trigger>
-							<Select.Value placeholder="Select Parent" />
+							<Select.Value class="w-full text-start" placeholder="Select Parent" />
 						</Select.Trigger>
+						{#if $formData.parent_module}
+							<Button size="icon" variant="outline" class="absolute -right-12 top-6" on:click={() => ($formData.parent_module = undefined)}><X class="h-4 w-4" /></Button>
+						{/if}
 						<Select.Content class="max-h-60 overflow-y-auto">
 							<Select.Group>
 								{#each engineModules as module}

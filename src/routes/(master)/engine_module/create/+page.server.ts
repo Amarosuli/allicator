@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const getEngineModule = async () => {
 		let result = await locals.pb.collection('engine_modules').getFullList();
-        return result.map(({ id, name, description }) => {
+		return result.map(({ id, name, description }) => {
 			return { label: `${name} - ${description}`, value: id };
 		});
 	};
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ locals, request }) => {
 		const form = await superValidate(request, zod(engineModuleSchema));
-
+		if (form.data.parent_module === 'undefined') delete form.data.parent_module;
 		if (!form.valid) return fail(400, { form });
 
 		try {

@@ -37,6 +37,7 @@ export const actions: Actions = {
 		let id = url.searchParams.get('id');
 		if (!id) return message(form, 'id not define', { status: 400 });
 		if (!form.valid) return fail(400, { form });
+		if (!form.data.parent_module) form.data.parent_module = '';
 
 		try {
 			await locals.pb.collection('engine_modules').update(id, form.data);
