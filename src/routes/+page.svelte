@@ -37,8 +37,8 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="flex w-full flex-col items-center justify-center gap-8 lg:flex-row">
-	<div class="md:w-1/3">
+<div class="flex w-full flex-col items-center justify-center gap-8 lg:flex-row lg:items-start">
+	<div class="w-full md:w-2/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">New Measurement</h1>
 
 		<div class="mx-auto mt-8 h-2/3 w-full space-y-2 border p-8 shadow">
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 
-	<div class="md:w-1/3">
+	<div class="w-full md:w-2/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">Project Manager</h1>
 
 		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 gap-2 border p-8 shadow">
@@ -106,31 +106,17 @@
 		</div>
 	</div>
 
-	<div class="md:w-1/3">
+	<div class="w-full md:w-2/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">Master Data</h1>
 
-		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 items-start justify-start gap-2 border p-8 shadow">
-			<div class="flex w-full flex-col space-y-2">
-				<Button disabled>Formula</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button href="/engine_model">Engine Model</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button href="/engine_family">Engine Family</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button href="/engine_module">Engine Module</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button disabled>Project Type</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button href="/unit">Unit</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button disabled>Role</Button>
-			</div>
+		<div class="mx-auto mt-8 flex h-2/3 w-full flex-wrap items-start justify-start gap-2 border p-8 shadow">
+			<Button class="w-fit" disabled>Formula</Button>
+			<Button class="w-fit" href="/engine_model">Engine Model</Button>
+			<Button class="w-fit" href="/engine_family">Engine Family</Button>
+			<Button class="w-fit" href="/engine_module">Engine Module</Button>
+			<Button class="w-fit" disabled>Project Type</Button>
+			<Button class="w-fit" href="/unit">Unit</Button>
+			<Button class="w-fit" disabled>Role</Button>
 			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage master data.</p>
 		</div>
 	</div>
