@@ -28,12 +28,21 @@ export const unitSchema = z.object({
 });
 
 export const projectTypeSchema = z.object({
-	name: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters'),
-	code: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters'),
+	name: z.string().trim().min(2, 'Project name is required, Minimal 2 Characters'),
+	code: z.string().trim().min(2, 'Project code is required, Minimal 2 Characters'),
 	description: z.string().trim().optional()
 });
 
 export const userRoleSchema = z.object({
-	name: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters').toUpperCase(),
+	name: z.string().trim().min(2, 'Role name is required, Minimal 2 Characters').toUpperCase(),
 	description: z.string().optional()
+});
+
+export const userSchema = z.object({
+	username: z.number().min(6, 'Username or Employee ID is required, Minimal 6 Characters'),
+	email: z.string().email().optional(),
+	name: z.string().trim().min(2, 'name is required, Minimal 2 Characters').toUpperCase(),
+	avatar: z.string().trim().optional(),
+	unit_id: z.string().trim().min(2, 'Unit is required, Minimal 2 Characters'),
+	role_id: z.string().trim().min(2, 'Role is required, Minimal 2 Characters')
 });
