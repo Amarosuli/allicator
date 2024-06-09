@@ -32,3 +32,8 @@ export const projectTypeSchema = z.object({
 	code: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters'),
 	description: z.string().trim().optional()
 });
+
+export const userRoleSchema = z.object({
+	name: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters').toUpperCase(),
+	description: z.string().optional()
+});

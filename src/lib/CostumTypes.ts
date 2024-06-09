@@ -40,6 +40,10 @@ export interface ProjectType extends RecordModel {
 	code: string;
 	description: string;
 }
+export interface UserRole extends RecordModel {
+	name: string;
+	description: string;
+}
 
 export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: string): RecordService;
@@ -50,6 +54,7 @@ export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: 'units'): RecordService<Unit>;
 	collection(idOrName: 'engine_list'): RecordService<EngineList>;
 	collection(idOrName: 'project_type'): RecordService<ProjectType>;
+	collection(idOrName: 'user_roles'): RecordService<UserRole>;
 }
 
 export type FileUrlOption = {
