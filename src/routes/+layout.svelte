@@ -6,19 +6,11 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { LoaderCircle, Moon, Sun } from 'lucide-svelte';
 	import { ModeWatcher, toggleMode } from 'mode-watcher';
+	import { getInitial } from '$lib/utils';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { Button } from '$lib/components/ui/button';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
-
-	function getInitial(fullname: string) {
-		let initial = fullname
-			.split(' ')
-			.map((word) => word.charAt(0))
-			.slice(0, 2)
-			.join('');
-		return initial;
-	}
 
 	export let data;
 	$: user = data.user;
