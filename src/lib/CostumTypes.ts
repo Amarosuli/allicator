@@ -44,6 +44,18 @@ export interface UserRole extends RecordModel {
 	name: string;
 	description: string;
 }
+export interface User extends RecordModel {
+	username: string;
+	email: string;
+	name: string;
+	avatar: string;
+	unit_id: string;
+	role_id: string;
+	expand?: {
+		unit_id: Unit;
+		role_id: UserRole;
+	};
+}
 
 export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: string): RecordService;
@@ -55,6 +67,7 @@ export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: 'engine_list'): RecordService<EngineList>;
 	collection(idOrName: 'project_type'): RecordService<ProjectType>;
 	collection(idOrName: 'user_roles'): RecordService<UserRole>;
+	collection(idOrName: 'users'): RecordService<User>;
 }
 
 export type FileUrlOption = {
