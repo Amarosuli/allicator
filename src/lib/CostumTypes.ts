@@ -9,16 +9,16 @@ export interface EngineModel extends RecordModel {
 	description: string;
 	family_id: EngineFamily['id'];
 	expand?: {
-		family_id: EngineFamily
-	}
+		family_id: EngineFamily;
+	};
 }
 export interface EngineModule extends RecordModel {
 	name: string;
 	description: string;
 	parent_module: EngineModule['id'];
 	expand?: {
-		parent_module: EngineModule
-	}
+		parent_module: EngineModule;
+	};
 }
 export interface Customer extends RecordModel {
 	name: string;
@@ -35,6 +35,11 @@ export interface EngineList extends RecordModel {
 	esn: string;
 	note: string;
 }
+export interface ProjectType extends RecordModel {
+	name: string;
+	code: string;
+	description: string;
+}
 
 export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: string): RecordService;
@@ -44,6 +49,7 @@ export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: 'customers'): RecordService<Customer>;
 	collection(idOrName: 'units'): RecordService<Unit>;
 	collection(idOrName: 'engine_list'): RecordService<EngineList>;
+	collection(idOrName: 'project_type'): RecordService<ProjectType>;
 }
 
 export type FileUrlOption = {
