@@ -41,8 +41,16 @@ export const userRoleSchema = z.object({
 export const userSchema = z.object({
 	username: z.number().min(6, 'Username or Employee ID is required, Minimal 6 Characters'),
 	email: z.string().email().optional(),
-	name: z.string().trim().min(2, 'name is required, Minimal 2 Characters').toUpperCase(),
+	name: z.string().trim().min(2, 'name is required, Minimal 2 Characters'),
 	avatar: z.string().trim().optional(),
 	unit_id: z.string().trim().min(2, 'Unit is required, Minimal 2 Characters'),
 	role_id: z.string().trim().min(2, 'Role is required, Minimal 2 Characters')
+});
+
+export const customerSchema = z.object({
+	name: z.string().trim().min(2, 'name is required, Minimal 2 Characters'),
+	description: z.string().optional(),
+	logo: z.string().trim().optional(),
+	code_IATA: z.string().optional(),
+	code_ICAO: z.string().optional()
 });

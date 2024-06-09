@@ -1,11 +1,11 @@
 <script lang="ts">
 	import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
-	import DataTableActions from '$lib/components/costum/data-table-actions.svelte';
+	import DataTableAvatar from '$lib/components/costum/data-table-avatar.svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Table from '$lib/components/ui/table';
 	import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
-	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, PlusCircle } from 'lucide-svelte';
+	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle } from 'lucide-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
@@ -14,10 +14,7 @@
 	import { cn } from '$lib/utils.js';
 
 	import { createPageFile } from '$lib/helpers.js';
-
-	export let data;
-	const { user } = data;
-	const basePath = $page.url.pathname;
+	import { getFileUrl } from '$lib/pocketbaseClient.js';
 
 	const { nextPage, prevPage, getState } = createPageFile().init('users', { expand: 'unit_id,role_id' });
 	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
@@ -60,6 +57,13 @@
 		table.column({
 			header: 'Username',
 			accessor: 'username'
+		}),
+		table.column({
+			header: 'Avatar',
+			accessor: (item) => item,
+			cell: ({ value }) => {
+				return createRender(DataTableAvatar, { src: getFileUrl(value.collectionId, value.id, value.avatar), alt: value.name, fallback: value.name });
+			}
 		}),
 		table.column({
 			header: 'Email',
