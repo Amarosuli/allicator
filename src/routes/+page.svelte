@@ -94,7 +94,7 @@
 
 		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 gap-2 border p-8 shadow">
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled>Engine List</Button>
+				<Button class="w-fit" href="/engine_list">Engine List</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
 				<Button disabled>Project List</Button>

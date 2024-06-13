@@ -22,6 +22,11 @@ export const engineModuleSchema = z.object({
 	parent_module: z.string().trim().optional()
 });
 
+export const engineListSchema = z.object({
+	esn: z.string().trim().min(6, 'ESN is required, Minimal 6 Characters'),
+	note: z.string().trim().optional()
+})
+
 export const unitSchema = z.object({
 	name: z.string().trim().min(2, 'Unit name is required, Minimal 2 Characters'),
 	description: z.string().trim().optional()
