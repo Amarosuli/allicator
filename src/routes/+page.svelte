@@ -9,26 +9,36 @@
 	import { pb } from '$lib/pocketbaseClient.js';
 	import { z } from 'zod';
 
-	import type { RecordModel } from 'pocketbase';
+	import type { EngineList } from '$lib/CostumTypes.js';
 
-	let esnInput = '';
-	let result: RecordModel | undefined;
+	let isLoading: boolean = false;
+	let engineId: string | undefined = undefined;
+	let esnInput: string = '';
 	let isOpen: boolean = false;
 
-	export let data;
-	const { allEngine } = data;
+	const findEngineByEsn = async () => {
+		let esn = z.string().trim().min(1, 'Cannot Empty').safeParse(esnInput);
+		if (!esn.success) return;
+		isLoading = true;
 
-	const findEsn = () => {
-		let esnInputTrimmed = z.string().trim().min(1, 'Cannot Empty').safeParse(esnInput);
-		if (!esnInputTrimmed.success) return;
+		let engineData: EngineList = {} as EngineList;
+		try {
+			engineData = await pb.collection('engine_list').getFirstListItem(`esn="${esn.data}"`);
+		} catch (_) {}
 
-		result = allEngine.find(({ esn }) => esn === esnInputTrimmed.data);
+		if (engineData) {
+			engineId = engineData.id;
+		} else {
+			engineId = undefined;
+		}
+
 		isOpen = true;
+		isLoading = false;
 	};
 
 	const getRevisionByEsn = async () => {
 		return await pb.collection('project_list').getFullList({
-			filter: 'engine_id="' + result?.id + '"'
+			filter: `engine_id="${engineId}"`
 		});
 	};
 </script>
@@ -47,37 +57,43 @@
 				<Input
 					bind:value={esnInput}
 					on:keypress={({ key }) => {
-						if (key === 'Enter' && !isOpen) findEsn();
+						if (key === 'Enter' && !isOpen) findEngineByEsn();
 					}}
 					type="text"
 					id="esn"
 					name="esn"
 					placeholder="Engine Serial Number"
 					autocomplete="off" />
-				<Button on:click={findEsn}>Search</Button>
+				<Button on:click={findEngineByEsn} disabled={isLoading ? true : false}>
+					{#if isLoading}
+						<LoaderCircle class="mr-2 h-4 w-4 animate-spin " /> Searching...
+					{:else}
+						Search
+					{/if}
+				</Button>
 				<Dialog.Root bind:open={isOpen}>
 					<Dialog.Content class="sm:max-w-[425px]">
 						<Dialog.Header>
-							<Dialog.Title class="font-semibold">Choose Revision Number</Dialog.Title>
-							<Dialog.Description class="text-xs">Choose active revision number of project ESN {esnInput}.</Dialog.Description>
+							<Dialog.Title class="font-semibold">{engineId ? 'Choose Revision Number' : 'Not Found'}</Dialog.Title>
+							<Dialog.Description class="text-xs">{engineId ? `Choose active revision number of project ESN ${esnInput}.` : ''}</Dialog.Description>
 						</Dialog.Header>
-						{#if result === undefined}
-							<div class="bg-yellow-200 p-4 font-extrabold text-slate-800">
-								Ups, Data for ESN {esnInput} Not Found!. <br /> Contact EPC to make sure the ESN already registered.
+						{#if engineId === undefined}
+							<div class="bg-destructive p-4 font-semibold text-destructive-foreground">
+								Oops, data for 'ESN {esnInput}' not found! <br /> Please contact EPC to ensure the ESN you are looking for is registered.
 							</div>
 						{:else}
 							<ScrollArea class="h-40 w-full rounded-md border p-4">
 								{#await getRevisionByEsn()}
-									<div class="flex h-32 w-full items-center justify-center gap-2 bg-muted font-semibold text-slate-800"><LoaderCircle class="mr-2 h-6 w-6 animate-spin " /> Loading...</div>
+									<div class="flex h-32 w-full items-center justify-center gap-2 bg-muted font-semibold"><LoaderCircle class="mr-2 h-6 w-6 animate-spin " /> Loading...</div>
 								{:then projectList}
 									{#each projectList as project}
 										<div class="flex w-full items-center justify-between gap-2 text-sm">
 											<a href="/calculation/{project.revision_number}" class="p-2 font-semibold underline-offset-2 hover:underline">
 												{project.revision_number}
 											</a>
-											<p class="w-16 p-1 px-2 {project.status === 'OPEN' ? 'bg-green-300' : 'bg-slate-200'} text-xs font-extrabold">{project.status}</p>
+											<p class="w-16 p-1 px-2 {project.status === 'OPEN' ? 'bg-green-300' : 'bg-slate-200'} text-xs font-extrabold text-slate-800">{project.status}</p>
 										</div>
-										<Separator class="" />
+										<Separator />
 									{/each}
 								{/await}
 							</ScrollArea>
