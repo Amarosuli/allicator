@@ -97,7 +97,7 @@
 				<Button class="w-fit" href="/engine_list">Engine List</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Button disabled>Project List</Button>
+				<Button class="w-fit" href="/project_list">Project List</Button>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
 				<Button disabled>Customer List</Button>

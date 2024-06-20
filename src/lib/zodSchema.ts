@@ -38,6 +38,18 @@ export const projectTypeSchema = z.object({
 	description: z.string().trim().optional()
 });
 
+export const projectListSchema = z.object({
+	revision_number : z.number().min(6, 'Revision number is required, Minimal 6 Characters'),
+	engine_config: z.string().trim().optional(),
+	engine_model_id: z.string().trim().optional(),	engine_id: z.string().trim().min(1, 'Engine Serial Number is necessary'), 
+	customer: z.string().trim().optional(), 
+	project_type_id: z.string().trim().optional(), 
+	description: z.string().trim().optional(),
+	status: z.string().trim().optional(),
+	started_at: z.string().date().optional(),
+	finished_at: z.string().date().optional()
+});
+
 export const userRoleSchema = z.object({
 	name: z.string().trim().min(2, 'Role name is required, Minimal 2 Characters').toUpperCase(),
 	description: z.string().optional()
