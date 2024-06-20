@@ -39,13 +39,14 @@ export const projectTypeSchema = z.object({
 });
 
 export const projectListSchema = z.object({
-	revision_number : z.number().min(6, 'Revision number is required, Minimal 6 Characters'),
+	revision_number : z.number().min(6, 'Revision number is required, Minimal 8 Characters'),
 	engine_config: z.string().trim().optional(),
-	engine_model_id: z.string().trim().optional(),	engine_id: z.string().trim().min(1, 'Engine Serial Number is necessary'), 
-	customer: z.string().trim().optional(), 
-	project_type_id: z.string().trim().optional(), 
+	engine_model_id: z.string().trim().min(1, 'Engine Model is necessary'),	
+	engine_id: z.string().trim().min(1, 'Engine Serial Number is necessary'), 
+	customer: z.string().trim().min(1, 'Customer is necessary'), 
+	project_type_id: z.string().trim().min(1, 'Project type is necessary'), 
 	description: z.string().trim().optional(),
-	status: z.string().trim().optional(),
+	status: z.string().trim().min(1, 'Project status is necessary'),
 	started_at: z.string().date().optional(),
 	finished_at: z.string().date().optional()
 });

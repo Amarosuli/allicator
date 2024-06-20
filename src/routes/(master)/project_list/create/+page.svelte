@@ -24,7 +24,7 @@
 	const { form: formData, delayed, message, enhance } = form;
 	const basePath = getFirstPath($page.url.pathname);
 
-    const projectStatus = [{label: 'Open', value: 'open'}, {label: 'Closed', value: 'closed'}]
+    const projectStatus = [{label: 'OPEN', value: 'OPEN'}, {label: 'CLOSED', value: 'CLOSED'}]
 
 	$: selectedEngineModel = $formData.engine_model_id
 		? {

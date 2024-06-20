@@ -19,7 +19,7 @@
 	const { user } = data;
 	const basePath = $page.url.pathname;
 
-    const {nextPage, prevPage, getState} = createPageFile().init('project_list',  { expand: ' engine_model_id,engine_id, customer,project_type_id'})
+    const {nextPage, prevPage, getState} = createPageFile().init('project_list',  { expand: ' engine_model_id, engine_id, customer,project_type_id'})
     const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
 
     const table = createTable(items, {
@@ -70,14 +70,14 @@
 			accessor: (item)=>{
 				return item.expand?.engine_model_id.name;
             }
-			// ,
-			// plugins: {
-            //     filter:{
-            //         getFilterValue(value){
-            //             return value.toLowerCase();
-            //         }
-            //     }
-            // }
+			,
+			plugins: {
+                filter:{
+                    getFilterValue(value){
+                        return value.toLowerCase();
+                    }
+                }
+            }
 		}),
         table.column({
 			header: 'ESN',
@@ -94,31 +94,31 @@
         }),
 		table.column({
 			header: 'Customer',
-			accessor: 'customer'
-			// accessor: (item)=>{
-			// 	return item.expand?.customer.name;
-			// },
-			// plugins: {
-            //     filter:{
-            //         getFilterValue(value){
-            //             return value.toLowerCase();
-            //         }
-            //     }
-            // }
+			accessor: (item)=>{
+				return item.expand?.customer.name;
+            }
+			,
+			plugins: {
+                filter:{
+                    getFilterValue(value){
+                        return value.toLowerCase();
+                    }
+                }
+            }
 		}),
 		table.column({
 			header: 'Project Type',
-			accessor: 'project_type_id'
-			// accessor: (item)=>{
-			// 	return item.expand?.project_type_id.name;
-			// },
-			// plugins: {
-            //     filter:{
-            //         getFilterValue(value){
-            //             return value.toLowerCase();
-            //         }
-            //     }
-            // }
+			accessor: (item)=>{
+				return item.expand?.project_type_id.name;
+            }
+			,
+			plugins: {
+                filter:{
+                    getFilterValue(value){
+                        return value.toLowerCase();
+                    }
+                }
+            }
 		}),
         table.column({
 			header: 'Description',
@@ -172,16 +172,15 @@
 
 <div class="relative mx-auto h-max w-full border p-4"> 
 
-{#if $isLoading}
+	{#if $isLoading}
 		<div transition:fade={{ duration: 200 }} class="absolute inset-0 z-30 flex h-full flex-col items-center justify-center bg-slate-600/70">
 			<LoaderCircle class="animate-spin text-yellow-400" />
 			<p class="pt-2 text-sm text-yellow-300">Loading Data</p>
 		</div>
 	{/if}
 
-	<button on:click={()=>console.log(items)}>Check</button>
+	<div class="flex w-full items-center justify-between">
 
-    <div class="flex w-full items-center justify-between">
 		<p class="w-full font-extrabold lg:text-xl">Project Lists</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
