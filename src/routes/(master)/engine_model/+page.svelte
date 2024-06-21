@@ -18,9 +18,9 @@
 	export let data;
 	const { user } = data;
 	const basePath = $page.url.pathname;
-	
-	const {nextPage, prevPage, getState} = createPageFile().init('engine_models', { expand: 'family_id' })
-    const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
+
+	const { nextPage, prevPage, getState } = createPageFile().init('engine_models', { expand: 'family_id' });
+	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
 
 	const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),

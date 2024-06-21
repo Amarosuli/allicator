@@ -19,9 +19,9 @@
 	const { user } = data;
 	const basePath = $page.url.pathname;
 
-	const {nextPage, prevPage, getState} = createPageFile().init('engine_families')
-    const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
-	
+	const { nextPage, prevPage, getState } = createPageFile().init('engine_families');
+	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
+
 	const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),
 		filter: addTableFilter({

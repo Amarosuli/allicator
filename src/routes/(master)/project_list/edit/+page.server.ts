@@ -16,33 +16,33 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			});
 	};
 
-	const getEngineModel = async(): Promise<SelectOption[]> =>{ 
-        const result = await locals.pb.collection('engine_models').getFullList();
-        return result.map(({id, name}) =>{
-            return {label: name, value: id}
-        })
-    }
+	const getEngineModel = async (): Promise<SelectOption[]> => {
+		const result = await locals.pb.collection('engine_models').getFullList();
+		return result.map(({ id, name }) => {
+			return { label: name, value: id };
+		});
+	};
 
-    const getEngineList = async (): Promise<SelectOption[]> => {
-        const result = await locals.pb.collection('engine_list').getFullList();
-        return result.map(({ id, esn }) => {
-            return { label: esn, value: id };
-        });
-    };
+	const getEngineList = async (): Promise<SelectOption[]> => {
+		const result = await locals.pb.collection('engine_list').getFullList();
+		return result.map(({ id, esn }) => {
+			return { label: esn, value: id };
+		});
+	};
 
-    const getCustomerList = async (): Promise<SelectOption[]> => {
-        const result = await locals.pb.collection('customers').getFullList();
-        return result.map(({ id, name }) => {
-            return { label: name, value: id };
-        });
-    };
+	const getCustomerList = async (): Promise<SelectOption[]> => {
+		const result = await locals.pb.collection('customers').getFullList();
+		return result.map(({ id, name }) => {
+			return { label: name, value: id };
+		});
+	};
 
-    const getProjectTypeList = async (): Promise<SelectOption[]> => {
-        const result = await locals.pb.collection('project_type').getFullList();
-        return result.map(({ id, name }) => {
-            return { label: name, value: id };
-        });
-    };
+	const getProjectTypeList = async (): Promise<SelectOption[]> => {
+		const result = await locals.pb.collection('project_type').getFullList();
+		return result.map(({ id, name }) => {
+			return { label: name, value: id };
+		});
+	};
 
 	return {
 		project: await getProjectById(),

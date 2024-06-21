@@ -1,10 +1,10 @@
 <script lang="ts">
-    import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
+	import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
 	import DataTableActions from '$lib/components/costum/data-table-actions.svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Table from '$lib/components/ui/table';
-    import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
+	import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, PlusCircle } from 'lucide-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { Button } from '$lib/components/ui/button';
@@ -13,16 +13,16 @@
 	import { fade } from 'svelte/transition';
 	import { cn } from '$lib/utils.js';
 
-    import { createPageFile } from '$lib/helpers.js';
+	import { createPageFile } from '$lib/helpers.js';
 
 	export let data;
 	const { user } = data;
 	const basePath = $page.url.pathname;
 
-    const {nextPage, prevPage, getState} = createPageFile().init('project_list',  { expand: ' engine_model_id, engine_id, customer,project_type_id'})
-    const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
+	const { nextPage, prevPage, getState } = createPageFile().init('project_list', { expand: ' engine_model_id, engine_id, customer,project_type_id' });
+	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
 
-    const table = createTable(items, {
+	const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),
 		filter: addTableFilter({
 			fn: ({ filterValue, value }) => value.includes(filterValue)
@@ -31,7 +31,7 @@
 		hide: addHiddenColumns()
 	});
 
-    const columns = table.createColumns([
+	const columns = table.createColumns([
 		table.column({
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
@@ -61,78 +61,79 @@
 			header: 'Revision Number',
 			accessor: 'revision_number'
 		}),
-        table.column({
+		table.column({
 			header: 'Engine Config',
 			accessor: 'engine_config'
 		}),
 		table.column({
 			header: 'Engine Model',
-			accessor: (item)=>{
+			accessor: (item) => {
 				return item.expand?.engine_model_id.name;
-            }
-			,
+			},
 			plugins: {
-                filter:{
-                    getFilterValue(value){
-                        return value.toLowerCase();
-                    }
-                }
-            }
-		}),
-        table.column({
-			header: 'ESN',
-            accessor: (item)=>{
-				return item.expand?.engine_id.esn;
-            },
-            plugins: {
-                filter:{
-					getFilterValue(value){
+				filter: {
+					getFilterValue(value) {
 						return value.toLowerCase();
-                    }
-                }
-            }
-        }),
+					}
+				}
+			}
+		}),
+		table.column({
+			header: 'ESN',
+			accessor: (item) => {
+				return item.expand?.engine_id.esn;
+			},
+			plugins: {
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
+		}),
+
 		table.column({
 			header: 'Customer',
-			accessor: (item)=>{
+
+			accessor: (item) => {
 				return item.expand?.customer.name;
-            }
-			,
+			},
 			plugins: {
-                filter:{
-                    getFilterValue(value){
-                        return value.toLowerCase();
-                    }
-                }
-            }
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
 		}),
 		table.column({
 			header: 'Project Type',
-			accessor: (item)=>{
+
+			accessor: (item) => {
 				return item.expand?.project_type_id.name;
-            }
-			,
+			},
 			plugins: {
-                filter:{
-                    getFilterValue(value){
-                        return value.toLowerCase();
-                    }
-                }
-            }
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
 		}),
-        table.column({
+
+		table.column({
 			header: 'Description',
 			accessor: 'description',
-            plugins: {
-                filter:{
-                    getFilterValue(value){
-                        return value.toLowerCase();
-                    }
-                }
-            }
+			plugins: {
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
 		}),
-		
-        table.column({
+
+		table.column({
 			header: 'Status',
 			accessor: 'status'
 		}),
@@ -163,15 +164,14 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hideableCols = ['revision_number', 'engine_config','engine_model_id', 'customer', 'project_type_id', 'description', 'status'];
+	const hideableCols = ['revision_number', 'engine_config', 'engine_model_id', 'customer', 'project_type_id', 'description', 'status'];
 </script>
 
 <svelte:head>
-    <title>Project Lists</title>
+	<title>Project Lists</title>
 </svelte:head>
 
-<div class="relative mx-auto h-max w-full border p-4"> 
-
+<div class="relative mx-auto h-max w-full border p-4">
 	{#if $isLoading}
 		<div transition:fade={{ duration: 200 }} class="absolute inset-0 z-30 flex h-full flex-col items-center justify-center bg-slate-600/70">
 			<LoaderCircle class="animate-spin text-yellow-400" />
@@ -180,7 +180,6 @@
 	{/if}
 
 	<div class="flex w-full items-center justify-between">
-
 		<p class="w-full font-extrabold lg:text-xl">Project Lists</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
@@ -192,7 +191,7 @@
 			<p class="block w-full text-ellipsis text-right text-xs">Login to manage data</p>
 		{/if}
 	</div>
-    <div class="flex items-center gap-2 py-2">
+	<div class="flex items-center gap-2 py-2">
 		<Input class="max-w-sm" placeholder="Filter name..." type="text" bind:value={$filterValue} />
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
@@ -211,7 +210,7 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>
-    <div class="rounded-md border">
+	<div class="rounded-md border">
 		<Table.Root {...$tableAttrs}>
 			<Table.Header>
 				{#each $headerRows as headerRow}
@@ -264,7 +263,7 @@
 			</Table.Body>
 		</Table.Root>
 	</div>
-    <div class="flex items-center justify-end space-x-2 py-4">
+	<div class="flex items-center justify-end space-x-2 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
 			Page {$currentPage} of {$totalPages}
 		</div>

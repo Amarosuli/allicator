@@ -45,7 +45,7 @@
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
-			
+
 			<Button class="mt-4" type="submit" disabled={$delayed ? true : false}>
 				{#if $delayed}
 					<LoaderCircle class="mr-2 h-4 w-4 animate-spin" /> Updating...

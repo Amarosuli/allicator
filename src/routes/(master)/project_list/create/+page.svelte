@@ -24,7 +24,10 @@
 	const { form: formData, delayed, message, enhance } = form;
 	const basePath = getFirstPath($page.url.pathname);
 
-    const projectStatus = [{label: 'OPEN', value: 'OPEN'}, {label: 'CLOSED', value: 'CLOSED'}]
+	const projectStatus = [
+		{ label: 'OPEN', value: 'OPEN' },
+		{ label: 'CLOSED', value: 'CLOSED' }
+	];
 
 	$: selectedEngineModel = $formData.engine_model_id
 		? {
@@ -32,29 +35,29 @@
 				value: $formData.engine_model_id
 			}
 		: undefined;
-    
-    $: selectedEngine = $formData.engine_id
+
+	$: selectedEngine = $formData.engine_id
 		? {
 				label: engineList.find(({ value }) => value == $formData.engine_id)?.label,
 				value: $formData.engine_id
 			}
 		: undefined;
-    
-    $: selectedCustomer = $formData.customer
+
+	$: selectedCustomer = $formData.customer
 		? {
 				label: customers.find(({ value }) => value == $formData.customer)?.label,
 				value: $formData.customer
 			}
 		: undefined;
 
-    $: selectedProjectType = $formData.project_type_id
+	$: selectedProjectType = $formData.project_type_id
 		? {
 				label: projectTypes.find(({ value }) => value == $formData.project_type_id)?.label,
 				value: $formData.project_type_id
 			}
 		: undefined;
 
-    $: selectedStatus = $formData.status
+	$: selectedStatus = $formData.status
 		? {
 				label: projectStatus.find(({ value }) => value == $formData.status)?.label,
 				value: $formData.status
@@ -78,14 +81,14 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="engine_config">
+			<Field {form} name="engine_config">
 				<Control let:attrs>
 					<Label>Engine Config</Label>
 					<Input {...attrs} bind:value={$formData.engine_config} type="text" placeholder="Engine Config" />
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
-			
+
 			<Field {form} name="engine_model_id">
 				<Control let:attrs>
 					<Label>Engine Model</Label>
@@ -110,7 +113,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="engine_id">
+			<Field {form} name="engine_id">
 				<Control let:attrs>
 					<Label>Engine Serial Number</Label>
 					<Select.Root
@@ -134,7 +137,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="customer">
+			<Field {form} name="customer">
 				<Control let:attrs>
 					<Label>Customer</Label>
 					<Select.Root
@@ -158,7 +161,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="project_type_id">
+			<Field {form} name="project_type_id">
 				<Control let:attrs>
 					<Label>Project Type</Label>
 					<Select.Root
@@ -182,7 +185,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="description">
+			<Field {form} name="description">
 				<Control let:attrs>
 					<Label>Project Description</Label>
 					<Input {...attrs} bind:value={$formData.description} type="text" placeholder="Project Description" />
@@ -190,7 +193,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="status">
+			<Field {form} name="status">
 				<Control let:attrs>
 					<Label>Project Status</Label>
 					<Select.Root
@@ -219,16 +222,12 @@
 					<LoaderCircle class="mr-2 h-4 w-4 animate-spin " /> Saving...
 				{:else}
 					Save
-				{/if} 
-                
+				{/if}
 			</Button>
 			{#if $message}
 				<p class="mt-2 bg-destructive p-2 text-center text-xs font-semibold text-destructive-foreground">{$message}</p>
 			{/if}
 			<Button class="mt-4" variant="outline" href={basePath}>Back</Button>
-
-           
 		</form>
-
 	</div>
 </div>

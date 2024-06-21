@@ -63,7 +63,6 @@
 			<p class="w-full pl-2 text-start font-bold">Engine Note</p>
 			<p class="w-full pr-2 text-right">{engineList?.note}</p>
 		</div>
-		
 	</div>
 
 	<div class="flex w-full flex-col items-center justify-center space-y-3 p-8 md:w-1/3">

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
+	import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
 	import DataTableActions from '$lib/components/costum/data-table-actions.svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -13,18 +13,17 @@
 	import { fade } from 'svelte/transition';
 	import { cn } from '$lib/utils.js';
 
-	import { createPageFile } from "$lib/helpers";
+	import { createPageFile } from '$lib/helpers';
 
-    export let data;
+	export let data;
 
-    const {user} = data
-    const basePath = $page.url.pathname;
+	const { user } = data;
+	const basePath = $page.url.pathname;
 
-    const {nextPage, prevPage, getState} = createPageFile().init('engine_modules', { expand: 'parent_module' })
-    const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
+	const { nextPage, prevPage, getState } = createPageFile().init('engine_modules', { expand: 'parent_module' });
+	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
 
-    
-    const table = createTable(items, {
+	const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),
 		filter: addTableFilter({
 			fn: ({ filterValue, value }) => value.includes(filterValue)
@@ -33,7 +32,7 @@
 		hide: addHiddenColumns()
 	});
 
-    const columns = table.createColumns([
+	const columns = table.createColumns([
 		table.column({
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
@@ -78,11 +77,11 @@
 			header: 'Parent Module',
 			accessor: (item) => {
 				if (!item.expand) {
-                    return '-';
-                } else {
-                    return `${item.expand.parent_module.name} - ${item.expand.parent_module.description}`
-                }
-			},
+					return '-';
+				} else {
+					return `${item.expand.parent_module.name} - ${item.expand.parent_module.description}`;
+				}
+			}
 		}),
 		table.column({
 			header: '',
@@ -98,7 +97,7 @@
 		})
 	]);
 
-    const { headerRows, pageRows, tableAttrs, tableBodyAttrs, flatColumns, pluginStates, rows } = table.createViewModel(columns);
+	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, flatColumns, pluginStates, rows } = table.createViewModel(columns);
 	const { selectedDataIds } = pluginStates.select;
 	const { hiddenColumnIds } = pluginStates.hide;
 	const { filterValue } = pluginStates.filter;
@@ -113,7 +112,6 @@
 
 	const hideableCols = ['name', 'description', 'Parent Module'];
 </script>
-
 
 <svelte:head>
 	<title>Engine Modules</title>

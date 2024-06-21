@@ -8,7 +8,7 @@ import type { Actions, PageServerLoad } from '../$types';
 export const load: PageServerLoad = async ({ locals }) => {
 	if (!locals.user) throw redirect(302, '/engine_list'); // Prevent guest users from accessing this page directly.
 
-	return { form: await superValidate(zod(engineListSchema))}
+	return { form: await superValidate(zod(engineListSchema)) };
 };
 
 export const actions: Actions = {

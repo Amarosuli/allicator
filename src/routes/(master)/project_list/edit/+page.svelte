@@ -24,55 +24,54 @@
 	const { form: formData, delayed, message, enhance } = form;
 	const basePath = getFirstPath($page.url.pathname);
 
-	const projectStatus = [{label: 'OPEN', value: 'OPEN'}, {label: 'CLOSED', value: 'CLOSED'}]
+	const projectStatus = [
+		{ label: 'OPEN', value: 'OPEN' },
+		{ label: 'CLOSED', value: 'CLOSED' }
+	];
 
-    $: project && formData.set({...project, engine_model_id: project.expand?.engine_model_id.id, engine_id: project.expand?.engine_id.id, customer: project.expand?.customer.id, project_type_id: project.expand?.project_type_id.id})
+	$: project &&
+		formData.set({
+			...project,
+			engine_model_id: project.expand!.engine_model_id.id,
+			engine_id: project.expand!.engine_id.id,
+			customer: project.expand!.customer.id,
+			project_type_id: project.expand!.project_type_id.id,
+			revision_number: project.revision_number,
+			status: project.description,
+			started_at: project.started_at,
+			finished_at: project.finished_at
+		});
 
 	$: selectedModel = $formData.engine_model_id
 		? {
 				label: engineModels.find(({ value }) => value == $formData.engine_model_id)?.label,
 				value: $formData.engine_model_id
 			}
-		: {
-				label: undefined,
-				value: ''
-			};
+		: undefined;
 	$: selectedEngine = $formData.engine_id
 		? {
 				label: engineList.find(({ value }) => value == $formData.engine_id)?.label,
 				value: $formData.engine_id
 			}
-		: {
-				label: undefined,
-				value: ''
-			};
+		: undefined;
 	$: selectedCustomer = $formData.customer
 		? {
 				label: customers.find(({ value }) => value == $formData.customer)?.label,
 				value: $formData.customer
 			}
-		: {
-				label: undefined,
-				value: ''
-			};
+		: undefined;
 	$: selectedProjectType = $formData.project_type_id
 		? {
 				label: projectTypes.find(({ value }) => value == $formData.project_type_id)?.label,
 				value: $formData.project_type_id
 			}
-		: {
-				label: undefined,
-				value: ''
-			};
+		: undefined;
 	$: selectedStatus = $formData.status
 		? {
 				label: projectStatus.find(({ value }) => value == $formData.status)?.label,
 				value: $formData.status
 			}
-		: {
-				label: undefined,
-				value: ''
-			};
+		: undefined;
 </script>
 
 <svelte:head>
@@ -91,14 +90,14 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="engine_config">
+			<Field {form} name="engine_config">
 				<Control let:attrs>
 					<Label>Engine Config</Label>
 					<Input {...attrs} bind:value={$formData.engine_config} type="text" placeholder="Engine Config" />
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
-			
+
 			<Field {form} name="engine_model_id">
 				<Control let:attrs>
 					<Label>Engine Model</Label>
@@ -123,7 +122,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="engine_model_id">
+			<Field {form} name="engine_id">
 				<Control let:attrs>
 					<Label>Engine Serial Number</Label>
 					<Select.Root
@@ -147,7 +146,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="customer">
+			<Field {form} name="customer">
 				<Control let:attrs>
 					<Label>Customer</Label>
 					<Select.Root
@@ -171,7 +170,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="project_type_id">
+			<Field {form} name="project_type_id">
 				<Control let:attrs>
 					<Label>Engine Model</Label>
 					<Select.Root
@@ -195,7 +194,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="description">
+			<Field {form} name="description">
 				<Control let:attrs>
 					<Label>Project Description</Label>
 					<Input {...attrs} bind:value={$formData.description} type="text" placeholder="Project Description" />
@@ -203,7 +202,7 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
-            <Field {form} name="status">
+			<Field {form} name="status">
 				<Control let:attrs>
 					<Label>Project Status</Label>
 					<Select.Root

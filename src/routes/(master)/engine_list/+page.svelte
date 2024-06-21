@@ -1,10 +1,10 @@
 <script lang="ts">
-    import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
+	import DataTableCheckbox from '$lib/components/costum/data-table-checkbox.svelte';
 	import DataTableActions from '$lib/components/costum/data-table-actions.svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Table from '$lib/components/ui/table';
-    import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
+	import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, PlusCircle } from 'lucide-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
 	import { Button } from '$lib/components/ui/button';
@@ -13,16 +13,16 @@
 	import { fade } from 'svelte/transition';
 	import { cn } from '$lib/utils.js';
 
-    import { createPageFile } from '$lib/helpers.js';
+	import { createPageFile } from '$lib/helpers.js';
 
 	export let data;
 	const { user } = data;
 	const basePath = $page.url.pathname;
 
-    const {nextPage, prevPage, getState} = createPageFile().init('engine_list')
-    const {currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage} = getState()
+	const { nextPage, prevPage, getState } = createPageFile().init('engine_list');
+	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
 
-    const table = createTable(items, {
+	const table = createTable(items, {
 		sort: addSortBy({ disableMultiSort: true }),
 		filter: addTableFilter({
 			fn: ({ filterValue, value }) => value.includes(filterValue)
@@ -31,7 +31,7 @@
 		hide: addHiddenColumns()
 	});
 
-    const columns = table.createColumns([
+	const columns = table.createColumns([
 		table.column({
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
@@ -64,13 +64,13 @@
 		table.column({
 			header: 'Note',
 			accessor: 'note',
-            plugins: {
-                filter:{
-                    getFilterValue(value){
-                        return value.toLowerCase();
-                    }
-                }
-            }
+			plugins: {
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
 		}),
 		table.column({
 			header: 'Actions',
@@ -99,22 +99,22 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hideableCols = ['esn','note'];
+	const hideableCols = ['esn', 'note'];
 </script>
 
 <svelte:head>
-    <title>Engine Lists</title>
+	<title>Engine Lists</title>
 </svelte:head>
 
-<div class="relative mx-auto h-max w-full border p-4"> 
-    {#if $isLoading}
+<div class="relative mx-auto h-max w-full border p-4">
+	{#if $isLoading}
 		<div transition:fade={{ duration: 200 }} class="absolute inset-0 z-30 flex h-full flex-col items-center justify-center bg-slate-600/70">
 			<LoaderCircle class="animate-spin text-yellow-400" />
 			<p class="pt-2 text-sm text-yellow-300">Loading Data</p>
 		</div>
 	{/if}
 
-    <div class="flex w-full items-center justify-between">
+	<div class="flex w-full items-center justify-between">
 		<p class="w-full font-extrabold lg:text-xl">Engine Lists</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
@@ -126,7 +126,7 @@
 			<p class="block w-full text-ellipsis text-right text-xs">Login to manage data</p>
 		{/if}
 	</div>
-    <div class="flex items-center gap-2 py-2">
+	<div class="flex items-center gap-2 py-2">
 		<Input class="max-w-sm" placeholder="Filter name..." type="text" bind:value={$filterValue} />
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
@@ -145,7 +145,7 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>
-    <div class="rounded-md border">
+	<div class="rounded-md border">
 		<Table.Root {...$tableAttrs}>
 			<Table.Header>
 				{#each $headerRows as headerRow}
@@ -198,13 +198,11 @@
 			</Table.Body>
 		</Table.Root>
 	</div>
-    <div class="flex items-center justify-end space-x-2 py-4">
+	<div class="flex items-center justify-end space-x-2 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
 			Page {$currentPage} of {$totalPages}
 		</div>
 		<Button variant="outline" size="sm" on:click={prevPage} disabled={!$hasPrevPage}>Previous</Button>
 		<Button variant="outline" size="sm" disabled={!$hasNextPage} on:click={nextPage}>Next</Button>
 	</div>
-
-   
 </div>
