@@ -34,12 +34,9 @@
 
 <div class="container mx-auto flex w-full flex-col space-y-8">
 	<div class="flex h-20 items-center justify-between border-b px-4">
-		<div>
-			<a href="/">
-				<!-- icon here -->
-				<h1 class="font-extrabold">Allicator</h1>
-			</a>
-		</div>
+		<Button href="/" variant="link" class="dark:invert">
+			<img src="/allicator.png" alt="Allicator" class="w-16 object-center lg:w-20" />
+		</Button>
 		<div class="flex items-center gap-2">
 			{#if user}
 				<DropdownMenu.Root>

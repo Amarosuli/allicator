@@ -1,17 +1,28 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import * as Accordion from '$lib/components/ui/accordion';
+	import * as HoverCard from '$lib/components/ui/hover-card';
+	import { Badge } from '$lib/components/ui/badge';
+	import { page } from '$app/stores';
+	import type { CalculationTemplate, EngineModule } from '$lib/CostumTypes.js';
 
 	export let data;
 	let { modules, projectDetail, calculationData, calculationTemplate } = data;
+	const basePath = $page.url.pathname;
 
 	function getModuleParent(data: any) {
-		return data.filter((module: any) => !module.parent_module.length);
+		return data.filter((module: any) => !module.parent_module.length) as EngineModule[];
 	}
 	function getModuleSub(data: any, parentId: any) {
-		return data.filter((module: any) => module.parent_module === parentId);
+		return data.filter((module: any) => module.parent_module === parentId) as EngineModule[];
+	}
+	function getCalculationTemplate(id: string) {
+		return calculationTemplate.data?.filter((calculationTmp: any) => calculationTmp.module_id === id) as CalculationTemplate[];
 	}
 </script>
+
+<svelte:head>
+	<title>Project ESN {projectDetail?.data?.esn}</title>
+</svelte:head>
 
 <div class="flex w-full flex-col items-center justify-center space-y-2 text-center">
 	<h1 class="text-center text-2xl font-extrabold">Project Page</h1>
@@ -49,7 +60,24 @@
 								<p class="pr-4 text-start text-sm">{sub.name} {sub.description}</p>
 							</Accordion.Trigger>
 							<Accordion.Content>
-								<p class="text-xs">No Reference</p>
+								{#each getCalculationTemplate(sub.id) as tmp}
+									<HoverCard.Root>
+										<HoverCard.Trigger href="{basePath}/{tmp.id}" rel="noreferrer noopener" class="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black">
+											<Badge>{tmp.title}</Badge>
+										</HoverCard.Trigger>
+										<HoverCard.Content class="w-80">
+											<div class="flex justify-between space-x-4">
+												<div class="space-y-1">
+													<h4 class="text-sm font-bold">{tmp.title}</h4>
+													<p class="text-sm">{tmp.description}</p>
+													<p class="text-sm">{tmp.subtask}</p>
+												</div>
+											</div>
+										</HoverCard.Content>
+									</HoverCard.Root>
+								{:else}
+									<p class="text-xs">No Reference</p>
+								{/each}
 							</Accordion.Content>
 						</Accordion.Item>
 					{/each}

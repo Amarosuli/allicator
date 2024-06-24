@@ -1,31 +1,26 @@
-import type { RecordModel } from 'pocketbase';
+import type { CalculationData, CalculationTemplate, EngineModule, ProjectList } from '$lib/CostumTypes';
 
 export const load = async ({ locals, params, setHeaders }) => {
 	setHeaders({ 'cache-control': 'max-age=600' });
 
 	const getProjectDetail = async () => {
-		let project: RecordModel;
+		let project: ProjectList;
 		try {
-			// find project by revision number
 			project = await locals.pb.collection('project_list').getFirstListItem('revision_number="' + params.revisionNumber + '"', {
 				expand: 'engine_model_id,engine_id'
 			});
 		} catch (error: any) {
-			console.log('[getProjectDetail]', error.response.code, error.response.message);
 			return { status: 'failed', message: `Project with revision number: ${params.revisionNumber}, Not Found` };
 		}
 		const { expand, ...data } = project;
-		return { status: 'success', data: { ...data, esn: expand?.engine_id.esn, model: expand?.engine_model_id.name, model_id: expand?.engine_model_id.id } as RecordModel };
+		return { status: 'success', data: { ...data, esn: expand?.engine_id?.esn, model: expand?.engine_model_id?.name, model_id: expand?.engine_model_id?.id } as ProjectList };
 	};
 
 	const getCalculationData = async () => {
-		let calculationData: RecordModel[];
+		let calculationData: CalculationData[];
 		try {
-			// get calculation data by revision number
 			calculationData = await locals.pb.collection('calculation_data').getFullList({ filter: 'revision_number="' + params.revisionNumber + '"' });
 		} catch (error: any) {
-			console.log('getCalculationData', error.response.code, error.response.message);
-			// return { code: error.response.code, message: error.response.message };
 			return { status: 'failed', message: error.response.message, data: undefined };
 		}
 
@@ -41,12 +36,10 @@ export const load = async ({ locals, params, setHeaders }) => {
 
 		if (project.status === 'failed' || project.data === undefined) return { status: 'failed', message: `Engine Model Not Found` };
 
-		let calculationTemplate: RecordModel[];
+		let calculationTemplate: CalculationTemplate[];
 		try {
-			// get all collection template by engine model - CFM56-7, CFM56-3, etc.
 			calculationTemplate = await locals.pb.collection('calculation_tmp').getFullList({ filter: 'engine_model_id="' + project.data.model_id + '"' });
 		} catch (error: any) {
-			console.log('[getCalculationTemplate]', error.response.code, error.response.message);
 			return { status: 'failed', code: error.response.code, message: error.response.message };
 		}
 		if (calculationTemplate.length) {
@@ -57,11 +50,10 @@ export const load = async ({ locals, params, setHeaders }) => {
 	};
 
 	const getModule = async () => {
-		let modules: RecordModel[];
+		let modules: EngineModule[];
 		try {
 			modules = await locals.pb.collection('engine_modules').getFullList({ sort: 'name' });
 		} catch (error: any) {
-			console.log('[getModule]', error.response.code, error.response.message);
 			return { status: 'failed', code: error.response.code, message: error.response.message };
 		}
 

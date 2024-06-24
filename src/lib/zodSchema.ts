@@ -68,7 +68,10 @@ export const userSchema = z.object({
 export const customerSchema = z.object({
 	name: z.string().trim().min(2, 'name is required, Minimal 2 Characters'),
 	description: z.string().optional(),
-	logo: z.string().trim().optional(),
+	logo: z
+		.instanceof(File, { message: 'Please upload a file.' })
+		.refine((f) => f.size < 100_000, 'Max 100 kB upload size.')
+		.optional(),
 	code_IATA: z.string().optional(),
 	code_ICAO: z.string().optional()
 });
