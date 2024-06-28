@@ -85,7 +85,10 @@
 		}),
 		table.column({
 			header: 'Code IATA',
-			accessor: 'code_IATA',
+			accessor: ({ code_IATA }) => {
+				if (code_IATA === undefined || code_IATA === 'undefined') return '-';
+				return code_IATA;
+			},
 			plugins: {
 				filter: {
 					getFilterValue(value) {
@@ -96,7 +99,10 @@
 		}),
 		table.column({
 			header: 'Code ICAO',
-			accessor: 'code_ICAO',
+			accessor: ({ code_ICAO }) => {
+				if (code_ICAO === undefined || code_ICAO === 'undefined') return '-';
+				return code_ICAO;
+			},
 			plugins: {
 				filter: {
 					getFilterValue(value) {
