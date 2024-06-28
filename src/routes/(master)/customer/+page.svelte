@@ -79,7 +79,6 @@
 			header: 'Logo',
 			accessor: (item) => item,
 			cell: ({ value }) => {
-				console.log(value);
 				let prop = { src: getFileUrl(value.collectionId, value.id, value.logo), alt: value.name };
 				return createRender(DataTableImage, prop);
 			}
