@@ -27,16 +27,17 @@ bun run dev -- --open
 ## Runtime
 
 - Nodejs v22.0.0
-- Bun v1.1.10
+- Bun v1.1.17
 
 ## Dependencies
 
-- [`Sveltekit 2.x.x`](https://kit.svelte.dev/)
+- [`Sveltekit 2.5.x`](https://kit.svelte.dev/)
 - [`Shadcn-svelte`](https://www.shadcn-svelte.com/) (UI Component), this UI component use TailwindCSS
 - [`Svelte-headless-table`](https://svelte-headless-table.bryanmylee.com/), this is library for data table
 - [`lucide-svelte`](https://lucide.dev/guide/packages/lucide-svelte) (Icon)
 - [`sveltekit-superforms`](https://superforms.rocks/) (Handling form)
 - [`zod`](https://zod.dev/) TypeScript schema validation
+- [`mathjs`](https://mathjs.org/) for Calculations
 
 ## Backend
 
