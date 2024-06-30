@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
+	import { createAllicator } from '$lib/Allicator';
+	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { createAllicator } from '$lib/helpers';
 
 	export let data;
 	const { calculationTemplate } = data;
