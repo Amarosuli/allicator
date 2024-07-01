@@ -11,6 +11,13 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
+	import CalendarIcon from 'lucide-svelte/icons/calendar';
+	import { DateFormatter, type DateValue, parseDate, getLocalTimeZone } from '@internationalized/date';
+	import { cn } from '$lib/utils.js';
+
+	import { Calendar } from '$lib/components/ui/calendar/index.js';
+	import * as Popover from '$lib/components/ui/popover/index.js';
+
 	export let data;
 	const { engineModels, customers, projectTypes, engineList } = data;
 	const form = superForm(data.form, {
@@ -28,6 +35,16 @@
 		{ label: 'OPEN', value: 'OPEN' },
 		{ label: 'CLOSED', value: 'CLOSED' }
 	];
+
+	const df = new DateFormatter('en-US', {
+		dateStyle: 'long'
+	});
+
+	let value: DateValue | undefined = undefined;
+
+	$: startedAt = $formData.started_at ? parseDate($formData.started_at) : undefined;
+
+	$: finishedAt = $formData.finished_at ? parseDate($formData.finished_at) : undefined;
 
 	$: selectedEngineModel = $formData.engine_model_id
 		? {
@@ -217,6 +234,60 @@
 				<FieldErrors class="text-xs italic" />
 			</Field>
 
+			<Field {form} name="started_at">
+				<Control let:attrs>
+					<Label>Started at</Label>
+					<Popover.Root>
+						<Popover.Trigger asChild let:builder>
+							<Button variant="outline" class={cn('w-[280px] justify-start text-left font-normal', !startedAt && 'text-muted-foreground')} builders={[builder]}>
+								<CalendarIcon class="mr-2 h-4 w-4" />
+								{startedAt ? df.format(startedAt.toDate(getLocalTimeZone())) : 'Pick a date'}
+							</Button>
+						</Popover.Trigger>
+						<Popover.Content class="w-auto p-0">
+							<Calendar
+								bind:value
+								onValueChange={(v) => {
+									if (v) {
+										$formData.started_at = v.toString();
+									} else {
+										$formData.started_at = '';
+									}
+								}}
+								initialFocus />
+						</Popover.Content>
+					</Popover.Root>
+				</Control>
+				<FieldErrors class="text-xs italic" />
+			</Field>
+
+			<Field {form} name="finished_at">
+				<Control let:attrs>
+					<Label>Finished at</Label>
+					<Popover.Root>
+						<Popover.Trigger asChild let:builder>
+							<Button variant="outline" class={cn('w-[280px] justify-start text-left font-normal', !finishedAt && 'text-muted-foreground')} builders={[builder]}>
+								<CalendarIcon class="mr-2 h-4 w-4" />
+								{finishedAt ? df.format(finishedAt.toDate(getLocalTimeZone())) : 'Pick a date'}
+							</Button>
+						</Popover.Trigger>
+						<Popover.Content class="w-auto p-0">
+							<Calendar
+								bind:value
+								onValueChange={(v) => {
+									if (v) {
+										$formData.finished_at = v.toString();
+									} else {
+										$formData.finished_at = '';
+									}
+								}}
+								initialFocus />
+						</Popover.Content>
+					</Popover.Root>
+				</Control>
+				<FieldErrors class="text-xs italic" />
+			</Field>
+
 			<Button class="mt-4" type="submit" disabled={$delayed ? true : false}>
 				{#if $delayed}
 					<LoaderCircle class="mr-2 h-4 w-4 animate-spin " /> Saving...
@@ -229,5 +300,7 @@
 			{/if}
 			<Button class="mt-4" variant="outline" href={basePath}>Back</Button>
 		</form>
+
+		<Button class="mt-4" variant="outline" on:click={() => console.log($formData)}>Check Form</Button>
 	</div>
 </div>
