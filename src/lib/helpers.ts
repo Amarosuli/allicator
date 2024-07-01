@@ -103,7 +103,7 @@ class PageFile<T> {
 	}
 }
 
-class Client {
+export class Client {
 	private pb: TypedPocketBase;
 
 	constructor() {
@@ -115,7 +115,7 @@ class Client {
 	}
 }
 
-interface TypedClient extends Client {
+export interface TypedClient extends Client {
 	init(idOrName: string, options?: RecordListOptions): PageFile<RecordModel>;
 	init(idOrName: 'engine_families', options?: RecordListOptions): PageFile<EngineFamily>;
 	init(idOrName: 'engine_models', options?: RecordListOptions): PageFile<EngineModel>;

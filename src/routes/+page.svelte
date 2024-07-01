@@ -115,7 +115,7 @@
 			<div class="flex w-full flex-col space-y-2">
 				<Button class="w-fit" href="/project_list">Project List</Button>
 			</div>
-			<div class="flex w-full flex-col space-y-2">
+			<div class="flex w-fit flex-col space-y-2">
 				<Button class="w-fit" href="/customer">Customer List</Button>
 			</div>
 			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage project data.</p>
