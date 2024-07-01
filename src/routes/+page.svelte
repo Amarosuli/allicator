@@ -108,12 +108,12 @@
 	<div class="w-full md:w-2/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">Project Manager</h1>
 
-		<div class="mx-auto mt-8 flex h-2/3 w-full flex-wrap items-start justify-start gap-2 border p-8 shadow">
-			<div class="flex w-fit flex-col space-y-2">
-				<Button class="w-fit" disabled>Engine List</Button>
+		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 gap-2 border p-8 shadow">
+			<div class="flex w-full flex-col space-y-2">
+				<Button class="w-fit" href="/engine_list">Engine List</Button>
 			</div>
-			<div class="flex w-fit flex-col space-y-2">
-				<Button class="w-fit" disabled>Project List</Button>
+			<div class="flex w-full flex-col space-y-2">
+				<Button class="w-fit" href="/project_list">Project List</Button>
 			</div>
 			<div class="flex w-fit flex-col space-y-2">
 				<Button class="w-fit" href="/customer">Customer List</Button>
