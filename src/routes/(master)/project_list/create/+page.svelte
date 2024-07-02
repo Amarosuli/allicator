@@ -1,22 +1,19 @@
 <script lang="ts">
+	import * as Popover from '$lib/components/ui/popover';
 	import * as Select from '$lib/components/ui/select';
 
+	import { DateFormatter, parseDate, getLocalTimeZone, type DateValue } from '@internationalized/date';
 	import { FieldErrors, Control, Field, Label } from '$lib/components/ui/form';
+	import { LoaderCircle, CalendarIcon } from 'lucide-svelte';
 	import { getFirstPath } from '$lib/helpers.js';
-	import { LoaderCircle } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
+	import { Calendar } from '$lib/components/ui/calendar';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-
-	import CalendarIcon from 'lucide-svelte/icons/calendar';
-	import { DateFormatter, type DateValue, parseDate, getLocalTimeZone } from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
-
-	import { Calendar } from '$lib/components/ui/calendar/index.js';
-	import * as Popover from '$lib/components/ui/popover/index.js';
 
 	export let data;
 	const { engineModels, customers, projectTypes, engineList } = data;
@@ -31,20 +28,20 @@
 	const { form: formData, delayed, message, enhance } = form;
 	const basePath = getFirstPath($page.url.pathname);
 
+	const df = new DateFormatter('en-US', {
+		dateStyle: 'long'
+	});
+
 	const projectStatus = [
 		{ label: 'OPEN', value: 'OPEN' },
 		{ label: 'CLOSED', value: 'CLOSED' }
 	];
 
-	const df = new DateFormatter('en-US', {
-		dateStyle: 'long'
-	});
+	let startedAt: DateValue | undefined;
+	let finishedAt: DateValue | undefined;
 
-	let value: DateValue | undefined = undefined;
-
-	$: startedAt = $formData.started_at ? parseDate($formData.started_at) : undefined;
-
-	$: finishedAt = $formData.finished_at ? parseDate($formData.finished_at) : undefined;
+	$: startedAt = $formData.started_at && $formData.started_at !== 'undefined' ? parseDate($formData.started_at) : undefined;
+	$: finishedAt = $formData.finished_at && $formData.finished_at !== 'undefined' ? parseDate($formData.finished_at) : undefined;
 
 	$: selectedEngineModel = $formData.engine_model_id
 		? {
@@ -246,17 +243,13 @@
 						</Popover.Trigger>
 						<Popover.Content class="w-auto p-0">
 							<Calendar
-								bind:value
 								onValueChange={(v) => {
-									if (v) {
-										$formData.started_at = v.toString();
-									} else {
-										$formData.started_at = '';
-									}
+									$formData.started_at = v ? v.toString() : '';
 								}}
 								initialFocus />
 						</Popover.Content>
 					</Popover.Root>
+					<input type="text" hidden value={$formData.started_at} {...attrs} />
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
@@ -273,17 +266,13 @@
 						</Popover.Trigger>
 						<Popover.Content class="w-auto p-0">
 							<Calendar
-								bind:value
 								onValueChange={(v) => {
-									if (v) {
-										$formData.finished_at = v.toString();
-									} else {
-										$formData.finished_at = '';
-									}
+									$formData.finished_at = v ? v.toString() : '';
 								}}
 								initialFocus />
 						</Popover.Content>
 					</Popover.Root>
+					<input type="text" hidden value={$formData.finished_at} {...attrs} />
 				</Control>
 				<FieldErrors class="text-xs italic" />
 			</Field>
@@ -300,7 +289,5 @@
 			{/if}
 			<Button class="mt-4" variant="outline" href={basePath}>Back</Button>
 		</form>
-
-		<Button class="mt-4" variant="outline" on:click={() => console.log($formData)}>Check Form</Button>
 	</div>
 </div>
