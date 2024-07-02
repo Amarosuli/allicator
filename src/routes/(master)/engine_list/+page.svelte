@@ -103,7 +103,7 @@
 </script>
 
 <svelte:head>
-	<title>Engine Lists</title>
+	<title>Engine List</title>
 </svelte:head>
 
 <div class="relative mx-auto h-max w-full border p-4">
@@ -115,7 +115,7 @@
 	{/if}
 
 	<div class="flex w-full items-center justify-between">
-		<p class="w-full font-extrabold lg:text-xl">Engine Lists</p>
+		<p class="w-full font-extrabold lg:text-xl">Engine List</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
 				<div class="flex items-center gap-2">

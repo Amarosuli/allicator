@@ -60,12 +60,24 @@
 		table.column({
 			header: 'Name',
 			accessor: 'name',
-			plugins: { filter: { exclude: true } }
+			plugins: {
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
 		}),
 		table.column({
 			header: 'Code',
 			accessor: 'code',
-			plugins: { filter: { exclude: true } }
+			plugins: {
+				filter: {
+					getFilterValue(value) {
+						return value.toLowerCase();
+					}
+				}
+			}
 		}),
 		table.column({
 			header: 'Description',
@@ -109,7 +121,7 @@
 </script>
 
 <svelte:head>
-	<title>Project Type</title>
+	<title>Project Types</title>
 </svelte:head>
 
 <div class="relative mx-auto h-max w-full border p-4">
@@ -120,7 +132,7 @@
 		</div>
 	{/if}
 	<div class="flex w-full items-center justify-between">
-		<p class="w-full font-extrabold lg:text-xl">Project Type</p>
+		<p class="w-full font-extrabold lg:text-xl">Project Types</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
 				<div class="flex items-center gap-2">
@@ -159,7 +171,9 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class={cn('[&:has([role=checkbox])]:pl-3')}>
-										{#if cell.id === 'name'}
+										{#if cell.id === 'id' || cell.id === ''}
+											<Render of={cell.render()} />
+										{:else}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
 												{#if $sortKeys[0]?.id === cell.id && $sortKeys[0]?.order === 'asc'}
@@ -170,8 +184,6 @@
 													<div class="ml-2 h-4 w-4"></div>
 												{/if}
 											</Button>
-										{:else}
-											<Render of={cell.render()} />
 										{/if}
 									</Table.Head>
 								</Subscribe>
