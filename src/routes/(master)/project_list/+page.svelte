@@ -7,6 +7,7 @@
 	import { addHiddenColumns, addSelectedRows, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { ArrowDown, ArrowUp, ChevronDown, LoaderCircle, PlusCircle } from 'lucide-svelte';
 	import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
+	import { DateFormatter, parseDate, getLocalTimeZone, type DateValue } from '@internationalized/date';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { page } from '$app/stores';
@@ -18,6 +19,10 @@
 	export let data;
 	const { user } = data;
 	const basePath = $page.url.pathname;
+
+	const df = new DateFormatter('id-ID', {
+		dateStyle: 'long'
+	});
 
 	const { nextPage, prevPage, getState } = createPageFile().init('project_list', { expand: ' engine_model_id, engine_id, customer,project_type_id' });
 	const { currentPage, items, totalPages, isLoading, hasPrevPage, hasNextPage } = getState();
@@ -68,7 +73,8 @@
 		table.column({
 			header: 'Engine Model',
 			accessor: (item) => {
-				return item.expand?.engine_model_id.name;
+				if (item.expand && item.expand.engine_model_id) return item.expand.engine_model_id.name;
+				return '-';
 			},
 			plugins: {
 				filter: {
@@ -81,22 +87,15 @@
 		table.column({
 			header: 'ESN',
 			accessor: (item) => {
-				return item.expand?.engine_id.esn;
-			},
-			plugins: {
-				filter: {
-					getFilterValue(value) {
-						return value.toLowerCase();
-					}
-				}
+				if (item.expand && item.expand.engine_id) return item.expand.engine_id.esn;
+				return '-';
 			}
 		}),
-
 		table.column({
 			header: 'Customer',
-
 			accessor: (item) => {
-				return item.expand?.customer.name;
+				if (item.expand && item.expand.customer) return item.expand.customer.name;
+				return '-';
 			},
 			plugins: {
 				filter: {
@@ -108,9 +107,9 @@
 		}),
 		table.column({
 			header: 'Project Type',
-
 			accessor: (item) => {
-				return item.expand?.project_type_id.name;
+				if (item.expand && item.expand.project_type_id) return item.expand.project_type_id.name;
+				return '-';
 			},
 			plugins: {
 				filter: {
@@ -120,7 +119,6 @@
 				}
 			}
 		}),
-
 		table.column({
 			header: 'Description',
 			accessor: 'description',
@@ -132,10 +130,23 @@
 				}
 			}
 		}),
-
 		table.column({
 			header: 'Status',
 			accessor: 'status'
+		}),
+		table.column({
+			header: 'Started At',
+			accessor: (item) => {
+				if (item.started_at) return df.format(parseDate(item.started_at.split(' ')[0]).toDate(getLocalTimeZone()));
+				return '-';
+			}
+		}),
+		table.column({
+			header: 'Finished At',
+			accessor: (item) => {
+				if (item.finished_at) return df.format(parseDate(item.finished_at.split(' ')[0]).toDate(getLocalTimeZone()));
+				return '-';
+			}
 		}),
 		table.column({
 			header: 'Actions',
@@ -164,11 +175,11 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hideableCols = ['revision_number', 'engine_config', 'engine_model_id', 'customer', 'project_type_id', 'description', 'status'];
+	const hideableCols = ['revision_number', 'engine_config', 'Engine Model', 'ESN', 'Customer', 'Project Type', 'description', 'status', 'Started At', 'Finished At'];
 </script>
 
 <svelte:head>
-	<title>Project Lists</title>
+	<title>Project List</title>
 </svelte:head>
 
 <div class="relative mx-auto h-max w-full border p-4">
@@ -180,7 +191,7 @@
 	{/if}
 
 	<div class="flex w-full items-center justify-between">
-		<p class="w-full font-extrabold lg:text-xl">Project Lists</p>
+		<p class="w-full font-extrabold lg:text-xl">Project List</p>
 		{#if user}
 			<Button size="sm" href="{basePath}/create">
 				<div class="flex items-center gap-2">
