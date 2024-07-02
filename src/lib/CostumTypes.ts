@@ -90,10 +90,10 @@ export interface ProjectList extends RecordModel {
 	started_at: string;
 	finished_at: string;
 	expand?: {
-		engine_model_id?: EngineModel;
-		engine_id?: EngineList;
-		customer?: Customer;
-		project_type_id?: ProjectType;
+		engine_model_id: EngineModel;
+		engine_id: EngineList;
+		customer: Customer;
+		project_type_id: ProjectType;
 	};
 }
 

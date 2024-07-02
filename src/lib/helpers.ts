@@ -1,7 +1,7 @@
 import { derived, writable, type Readable, type Writable } from 'svelte/store';
 import { pb } from './pocketbaseClient';
 
-import type { Customer, EngineFamily, EngineList, EngineModel, EngineModule, ProjectType, TypedPocketBase, Unit, User, UserRole } from './CostumTypes';
+import type { Customer, EngineFamily, EngineList, EngineModel, EngineModule, ProjectList, ProjectType, TypedPocketBase, Unit, User, UserRole } from './CostumTypes';
 import type { RecordListOptions, RecordModel, RecordService } from 'pocketbase';
 
 export const getFirstPath = (s: string): string => {
@@ -124,6 +124,7 @@ export interface TypedClient extends Client {
 	init(idOrName: 'units', options?: RecordListOptions): PageFile<Unit>;
 	init(idOrName: 'engine_list', options?: RecordListOptions): PageFile<EngineList>;
 	init(idOrName: 'project_type', options?: RecordListOptions): PageFile<ProjectType>;
+	init(idOrName: 'project_list', options?: RecordListOptions): PageFile<ProjectList>;
 	init(idOrName: 'user_roles', options?: RecordListOptions): PageFile<UserRole>;
 	init(idOrName: 'users', options?: RecordListOptions): PageFile<User>;
 }

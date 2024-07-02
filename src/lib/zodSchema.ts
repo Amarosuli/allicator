@@ -47,8 +47,14 @@ export const projectListSchema = z.object({
 	project_type_id: z.string().trim().min(1, 'Project type is necessary'),
 	description: z.string().trim().optional(),
 	status: z.string().trim().min(1, 'Project status is necessary'),
-	started_at: z.string().date().optional(),
-	finished_at: z.string().date().optional()
+	started_at: z
+		.string()
+		.transform((str) => new Date(str).toUTCString())
+		.optional(),
+	finished_at: z
+		.string()
+		.transform((str) => new Date(str).toUTCString())
+		.optional()
 });
 
 export const userRoleSchema = z.object({
