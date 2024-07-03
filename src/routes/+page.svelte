@@ -41,6 +41,17 @@
 			filter: `engine_id="${engineId}"`
 		});
 	};
+
+	const masterDataLinks = [
+		{ href: '/calculation_template', label: 'Calculation Template', isDisabled: false },
+		{ href: '/engine_model', label: 'Engine Model', isDisabled: false },
+		{ href: '/engine_family', label: 'Engine Family', isDisabled: false },
+		{ href: '/engine_module', label: 'Engine Module', isDisabled: false },
+		{ href: '/project_type', label: 'Project Type', isDisabled: false },
+		{ href: '/unit', label: 'Unit', isDisabled: false },
+		{ href: '/user', label: 'User', isDisabled: false },
+		{ href: '/user_role', label: 'User Role', isDisabled: false }
+	];
 </script>
 
 <svelte:head>
@@ -126,14 +137,13 @@
 		<h1 class="w-full text-center text-2xl font-extrabold">Master Data</h1>
 
 		<div class="mx-auto mt-8 flex h-2/3 w-full flex-wrap items-start justify-start gap-2 border p-8 shadow">
-			<Button class="w-fit" disabled>Formula</Button>
-			<Button class="w-fit" href="/engine_model">Engine Model</Button>
-			<Button class="w-fit" href="/engine_family">Engine Family</Button>
-			<Button class="w-fit" href="/engine_module">Engine Module</Button>
-			<Button class="w-fit" href="/project_type">Project Type</Button>
-			<Button class="w-fit" href="/unit">Unit</Button>
-			<Button class="w-fit" href="/user">User</Button>
-			<Button class="w-fit" href="/user_role">User Role</Button>
+			{#each masterDataLinks as link}
+				{#if link.isDisabled}
+					<Button class="w-fit" disabled>{link.label}</Button>
+				{:else}
+					<Button class="w-fit" href={link.href}>{link.label}</Button>
+				{/if}
+			{/each}
 			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage master data.</p>
 		</div>
 	</div>
