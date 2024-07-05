@@ -1,6 +1,4 @@
-# Allicator
-
-An application for ...
+![Allicator](static/allicator.png)
 
 ## Running Project
 
