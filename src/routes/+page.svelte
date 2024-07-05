@@ -119,24 +119,18 @@
 	<div class="w-full md:w-2/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">Project Manager</h1>
 
-		<div class="mx-auto mt-8 grid h-2/3 w-full grid-cols-3 gap-2 border p-8 shadow">
-			<div class="flex w-full flex-col space-y-2">
-				<Button class="w-fit" href="/engine_list">Engine List</Button>
-			</div>
-			<div class="flex w-full flex-col space-y-2">
-				<Button class="w-fit" href="/project_list">Project List</Button>
-			</div>
-			<div class="flex w-fit flex-col space-y-2">
-				<Button class="w-fit" href="/customer">Customer List</Button>
-			</div>
-			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage project data.</p>
+		<div class="mx-auto mt-8 flex h-2/3 w-full grid-cols-3 flex-wrap items-start justify-start md:justify-center gap-2 border p-8 shadow">
+			<Button class="w-full md:w-fit" href="/engine_list">Engine List</Button>
+			<Button class="w-full md:w-fit" href="/project_list">Project List</Button>
+			<Button class="w-full md:w-fit" href="/customer">Customer List</Button>
+			<p class="col-span-3 w-full md:text-center text-xs text-muted-foreground">Group of all menu for manage project data.</p>
 		</div>
 	</div>
 
 	<div class="w-full md:w-2/3">
 		<h1 class="w-full text-center text-2xl font-extrabold">Master Data</h1>
 
-		<div class="mx-auto mt-8 flex h-2/3 w-full flex-wrap items-start justify-start gap-2 border p-8 shadow">
+		<div class="mx-auto mt-8 flex h-2/3 w-full flex-wrap items-start md:justify-center gap-2 border p-8 shadow">
 			{#each masterDataLinks as link}
 				{#if link.isDisabled}
 					<Button class="w-fit" disabled>{link.label}</Button>
@@ -144,7 +138,7 @@
 					<Button class="w-fit" href={link.href}>{link.label}</Button>
 				{/if}
 			{/each}
-			<p class="col-span-3 w-full text-xs text-muted-foreground">Group of all menu for manage master data.</p>
+			<p class="col-span-3 w-full md:text-center text-xs text-muted-foreground">Group of all menu for manage master data.</p>
 		</div>
 	</div>
 </div>
