@@ -27,7 +27,7 @@ export const load = async ({ locals, params, setHeaders }) => {
 		if (calculationData.length) {
 			return { status: 'success', data: calculationData };
 		} else {
-			return { status: 'failed', message: `Calculation Data for revision number: ${params.revisionNumber}, Not Found`, data: calculationData };
+			return { status: 'failed', message: 'No calculation data for this revision project', data: calculationData };
 		}
 	};
 
@@ -45,7 +45,7 @@ export const load = async ({ locals, params, setHeaders }) => {
 		if (calculationTemplate.length) {
 			return { status: 'success', data: calculationTemplate };
 		} else {
-			return { status: 'failed', message: `Calculation Template for engine model: ${project.data.model_id}, Not Found`, data: calculationTemplate };
+			return { status: 'failed', message: 'No calculation template for this engine model', data: calculationTemplate };
 		}
 	};
 
