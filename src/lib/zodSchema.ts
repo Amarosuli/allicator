@@ -81,3 +81,21 @@ export const customerSchema = z.object({
 	code_IATA: z.string().optional(),
 	code_ICAO: z.string().optional()
 });
+
+/**
+ * This Need Upgrade or Better solution.
+ * The regex used to validate formula is not perfect yet.
+ */
+export const collectionTemplateSchema = z.object({
+	title: z.string().trim().min(2, 'Calculation Title is required, Minimal 2 Characters'),
+	description: z.string().trim().optional(),
+	engine_model_id: z.string().trim().min(1, 'Engine Model is required'),
+	module_id: z.string().trim().min(1, 'Engine Module is required'),
+	formula: z
+		.string()
+		.trim()
+		.min(1, 'Formula is required')
+		.regex(/^([A-Z]+(?:\s*[-+*/]\s*[A-Z]+)*)\s*=\s*[A-Z]+$/, 'not valid'),
+	constanta: z.string().trim().optional(),
+	subtask: z.string().trim().optional()
+});
