@@ -26,26 +26,21 @@
 
 <div class="flex w-full flex-col items-center justify-center space-y-2 text-center">
 	<h1 class="text-center text-2xl font-extrabold">Project Page</h1>
-	{#if projectDetail.status === 'success' && projectDetail.data}
-		<div class="border border-green-600 p-4">
-			<p class="text-sm font-semibold">ESN {projectDetail.data.esn} | {projectDetail.data.model}</p>
-			<p class="text-sm font-semibold">Revision Number: {projectDetail.data.revision_number}</p>
+	<div class="rounded-md border border-green-600 p-4">
+		{#if projectDetail.status === 'success' && projectDetail.data}
+			<p class="text-sm font-semibold">ESN {projectDetail.data.esn} | {projectDetail.data.model} | {projectDetail.data.revision_number}</p>
+		{:else}
+			<p class="pt-2 text-sm font-semibold italic text-red-600">{projectDetail.message}</p>
+		{/if}
+		<div>
+			{#if calculationData.status === 'failed'}
+				<p class="text-sm italic text-red-600">{calculationData.message}</p>
+			{/if}
+			{#if calculationTemplate.status === 'failed'}
+				<p class="text-sm italic text-red-600">{calculationTemplate.message}</p>
+			{/if}
 		</div>
-	{:else}
-		<div class="border border-red-600 p-4">
-			<p class="text-sm font-semibold text-red-600">{projectDetail.message}</p>
-		</div>
-	{/if}
-	{#if calculationData.status === 'failed'}
-		<div class="border border-red-600 p-4">
-			<p class="text-sm font-semibold text-red-600">{calculationData.message}</p>
-		</div>
-	{/if}
-	{#if calculationTemplate.status === 'failed'}
-		<div class="border border-red-600 p-4">
-			<p class="text-sm font-semibold text-red-600">{calculationTemplate.message}</p>
-		</div>
-	{/if}
+	</div>
 </div>
 
 <div class="mx-auto flex w-fit flex-col items-stretch justify-center gap-3 p-2 md:w-fit md:flex-row">
